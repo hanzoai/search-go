@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/meilisearch/meilisearch-go"
+	"github.com/hanzoai/search-go"
 )
 
 // Document represents a simple document structure

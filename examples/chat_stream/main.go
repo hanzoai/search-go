@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/meilisearch/meilisearch-go"
+	"github.com/hanzoai/search-go"
 )
 
 func main() {

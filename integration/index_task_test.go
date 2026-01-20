@@ -3,7 +3,7 @@ package integration
 import (
 	"context"
 	"crypto/tls"
-	"github.com/meilisearch/meilisearch-go"
+	"github.com/hanzoai/search-go"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
