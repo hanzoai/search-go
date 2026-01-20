@@ -1,4 +1,4 @@
-module github.com/meilisearch/meilisearch-go
+module github.com/hanzoai/search-go
 
 go 1.20
 
