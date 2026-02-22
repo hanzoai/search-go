@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/hanzoai/search-go"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/stretchr/testify/require"
 )
@@ -1096,6 +1097,17 @@ func TestIndex_SearchSimilarDocuments(t *testing.T) {
 			resp:    new(meilisearch.SimilarDocumentResult),
 			wantErr: true,
 		},
+		{
+			UID:    "indexUID",
+			client: sv,
+			request: &meilisearch.SimilarDocumentQuery{
+				Id:                     "123",
+				Embedder:               "default",
+				ShowPerformanceDetails: true,
+			},
+			resp:    new(meilisearch.SimilarDocumentResult),
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {
@@ -1113,6 +1125,10 @@ func TestIndex_SearchSimilarDocuments(t *testing.T) {
 
 			require.NoError(t, err)
 			require.NotNil(t, tt.resp)
+
+			if tt.request.ShowPerformanceDetails {
+				require.NotNil(t, tt.resp.PerformanceDetails)
+			}
 		})
 	}
 }
@@ -1192,6 +1208,26 @@ func TestIndex_FacetSearch(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "TestIndexFacetSearchWithFilterArray",
+			args: args{
+				UID:    "indexUID",
+				client: sv,
+				request: &meilisearch.FacetSearchRequest{
+					FacetName:  "tag",
+					FacetQuery: "Novel",
+					Filter:     []string{"tag = Novel"},
+				},
+				filterableAttributes: []interface{}{"tag"},
+			},
+			want: &meilisearch.FacetSearchResponse{
+				FacetHits: meilisearch.Hits{
+					{"value": toRawMessage("Novel"), "count": toRawMessage(5)},
+				},
+				FacetQuery: "Novel",
+			},
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {
@@ -1236,4 +1272,20 @@ func TestIndex_FacetSearch(t *testing.T) {
 			require.Equal(t, tt.want.FacetQuery, got.FacetQuery)
 		})
 	}
+}
+
+func TestIndex_ShowPerformanceDetails(t *testing.T) {
+	sv := setup(t, "")
+	t.Cleanup(cleanup(sv))
+
+	setUpIndexForFaceting(sv)
+
+	idx := sv.Index("indexUID")
+
+	resp, err := idx.Search("Pride", &meilisearch.SearchRequest{
+		ShowPerformanceDetails: true,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	assert.NotNil(t, resp.PerformanceDetails)
 }

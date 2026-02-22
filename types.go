@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/golang-jwt/jwt/v4"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 const (
@@ -538,6 +538,7 @@ type SearchRequest struct {
 	ShowMatchesPosition     bool                     `json:"showMatchesPosition,omitempty"`
 	ShowRankingScore        bool                     `json:"showRankingScore,omitempty"`
 	ShowRankingScoreDetails bool                     `json:"showRankingScoreDetails,omitempty"`
+	ShowPerformanceDetails  bool                     `json:"showPerformanceDetails,omitempty"`
 	Facets                  []string                 `json:"facets,omitempty"`
 	Sort                    []string                 `json:"sort,omitempty"`
 	Vector                  []float32                `json:"vector,omitempty"`
@@ -596,6 +597,7 @@ type SearchResponse struct {
 	FacetStats         json.RawMessage `json:"facetStats,omitempty"`
 	IndexUID           string          `json:"indexUid,omitempty"`
 	QueryVector        *[]float32      `json:"queryVector,omitempty"`
+	PerformanceDetails map[string]any  `json:"performanceDetails,omitempty"`
 }
 
 type MultiSearchResponse struct {
@@ -619,13 +621,13 @@ type RemoteError struct {
 }
 
 type FacetSearchRequest struct {
-	FacetName            string   `json:"facetName,omitempty"`
-	FacetQuery           string   `json:"facetQuery,omitempty"`
-	Q                    string   `json:"q,omitempty"`
-	Filter               string   `json:"filter,omitempty"`
-	MatchingStrategy     string   `json:"matchingStrategy,omitempty"`
-	AttributesToSearchOn []string `json:"attributesToSearchOn,omitempty"`
-	ExhaustiveFacetCount bool     `json:"exhaustiveFacetCount,omitempty"`
+	FacetName            string      `json:"facetName,omitempty"`
+	FacetQuery           string      `json:"facetQuery,omitempty"`
+	Q                    string      `json:"q,omitempty"`
+	Filter               interface{} `json:"filter,omitempty"`
+	MatchingStrategy     string      `json:"matchingStrategy,omitempty"`
+	AttributesToSearchOn []string    `json:"attributesToSearchOn,omitempty"`
+	ExhaustiveFacetCount bool        `json:"exhaustiveFacetCount,omitempty"`
 }
 
 type FacetSearchResponse struct {
@@ -661,17 +663,19 @@ type SimilarDocumentQuery struct {
 	Filter                  string      `json:"filter,omitempty"`
 	ShowRankingScore        bool        `json:"showRankingScore,omitempty"`
 	ShowRankingScoreDetails bool        `json:"showRankingScoreDetails,omitempty"`
+	ShowPerformanceDetails  bool        `json:"showPerformanceDetails,omitempty"`
 	RankingScoreThreshold   float64     `json:"rankingScoreThreshold,omitempty"`
 	RetrieveVectors         bool        `json:"retrieveVectors,omitempty"`
 }
 
 type SimilarDocumentResult struct {
-	Hits               Hits   `json:"hits,omitempty"`
-	ID                 string `json:"id,omitempty"`
-	ProcessingTimeMS   int64  `json:"processingTimeMs,omitempty"`
-	Limit              int64  `json:"limit,omitempty"`
-	Offset             int64  `json:"offset,omitempty"`
-	EstimatedTotalHits int64  `json:"estimatedTotalHits,omitempty"`
+	Hits               Hits           `json:"hits,omitempty"`
+	ID                 string         `json:"id,omitempty"`
+	ProcessingTimeMS   int64          `json:"processingTimeMs,omitempty"`
+	Limit              int64          `json:"limit,omitempty"`
+	Offset             int64          `json:"offset,omitempty"`
+	EstimatedTotalHits int64          `json:"estimatedTotalHits,omitempty"`
+	PerformanceDetails map[string]any `json:"performanceDetails,omitempty"`
 }
 
 // DocumentOptions is the options struct for adding or updating documents (JSON/NDJSON)
@@ -712,7 +716,7 @@ type UpdateDocumentByFunctionRequest struct {
 	TaskCustomMetadata string `json:"-"`
 }
 
-// ExperimentalFeaturesResult represents the experimental features result from the API.
+// ExperimentalFeaturesBase represents the experimental features result from the API.
 type ExperimentalFeaturesBase struct {
 	LogsRoute               *bool `json:"logsRoute,omitempty"`
 	Metrics                 *bool `json:"metrics,omitempty"`
@@ -745,7 +749,7 @@ type Health struct {
 	Status string `json:"status"`
 }
 
-// UpdateIndexRequest is the request body for update Index primary key and renaming IndexUid
+// UpdateIndexRequestParams is the request body for update Index primary key and renaming IndexUid
 type UpdateIndexRequestParams struct {
 	PrimaryKey string `json:"primaryKey,omitempty"`
 	UID        string `json:"uid,omitempty"`
