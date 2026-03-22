@@ -1,10 +1,11 @@
 module github.com/hanzoai/search-go
 
-go 1.26
+go 1.26.1
 
 require (
 	github.com/andybalholm/brotli v1.1.1
 	github.com/golang-jwt/jwt/v5 v5.3.1
+	github.com/meilisearch/meilisearch-go v0.36.1
 	github.com/stretchr/testify v1.11.1
 )
 
