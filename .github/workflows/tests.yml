@@ -14,12 +14,12 @@ jobs:
     steps:
       - uses: actions/setup-go@v6
         with:
-          go-version: 1.25
+          go-version: "1.26"
       - uses: actions/checkout@v6
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:
-          version: v2.3.0
+          version: v2.11.4
       - name: Run go vet
         run: go vet
       - name: Yaml linter
@@ -34,13 +34,11 @@ jobs:
     if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
     strategy:
       matrix:
-        # Current go.mod version and latest stable go version
-        go: ["1.21", "1.25"]
+        # go.mod requires Go 1.26.1; keep a single row until the next stable (1.27) ships.
+        go: ["1.26"]
         include:
-          - go: "1.21"
+          - go: "1.26"
             tag: current
-          - go: "1.25"
-            tag: latest
 
     name: integration-tests (go ${{ matrix.tag }} version)
     steps:
