@@ -13,13 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # Current go.mod version and latest stable go version
-        go: ["1.21", "1.25"]
+        # go.mod requires Go 1.26.1; keep a single row until the next stable (1.27) ships.
+        go: ["1.26"]
         include:
-          - go: "1.21"
+          - go: "1.26"
             tag: current
-          - go: "1.25"
-            tag: latest
 
     name: integration-tests-against-rc (go ${{ matrix.tag }} version)
     steps:
