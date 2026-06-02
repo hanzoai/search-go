@@ -17,7 +17,7 @@ import (
 var (
 	masterKey           = "masterKey"
 	defaultRankingRules = []string{
-		"words", "typo", "proximity", "attribute", "sort", "exactness",
+		"words", "typo", "proximity", "attributeRank", "sort", "wordPosition", "exactness",
 	}
 	defaultTypoTolerance = meilisearch.TypoTolerance{
 		Enabled: true,
@@ -114,6 +114,14 @@ func cleanupChat(services ...meilisearch.ChatManager) func() {
 	}
 }
 
+func cleanupSearchRules(services ...meilisearch.SearchRulesManager) func() {
+	return func() {
+		for _, s := range services {
+			_, _ = deleteAllSearchRules(s)
+		}
+	}
+}
+
 func cleanupWebhook(services ...meilisearch.WebhookManager) func() {
 	return func() {
 		for _, s := range services {
@@ -181,6 +189,22 @@ func resetNetwork(sv meilisearch.ServiceManager) (ok bool, err error) {
 	})
 	if err != nil {
 		return false, err
+	}
+	return true, nil
+}
+
+func deleteAllSearchRules(searchRuleMgr meilisearch.SearchRulesManager) (ok bool, err error) {
+	rules, err := searchRuleMgr.ListSearchRules(&meilisearch.SearchRulesParams{
+		Offset: 0,
+		Limit:  1000,
+	})
+	if err != nil {
+		return false, err
+	}
+	for _, rule := range rules.Results {
+		if err := searchRuleMgr.DeleteSearchRule(rule.Uid); err != nil {
+			return false, err
+		}
 	}
 	return true, nil
 }
@@ -555,4 +579,13 @@ func toRawMessage(vPtr interface{}) json.RawMessage {
 		return nil
 	}
 	return data
+}
+
+func intPtr(i int) *int {
+	return &i
+}
+
+func int64Ptr(i int) *int64 {
+	v := int64(i)
+	return &v
 }
