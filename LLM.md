@@ -1,4 +1,4 @@
-# LLM.md - Hanzo Search Go
+# Hanzo Search Go
 
 ## Overview
 Go module: github.com/hanzoai/search-go
