@@ -10,7 +10,7 @@ on:
 jobs:
   linter:
     name: linter
-    runs-on: ubuntu-latest
+    runs-on: hanzo-build-linux-amd64
     steps:
       - uses: actions/setup-go@v6
         with:
@@ -28,7 +28,7 @@ jobs:
           config_file: .yamllint.yml
 
   integration_tests:
-    runs-on: ubuntu-latest
+    runs-on: hanzo-build-linux-amd64
     # Will not run if the event is a PR to bump-meilisearch-v* (so a pre-release PR)
     # Will still run for each push to bump-meilisearch-v*
     if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
