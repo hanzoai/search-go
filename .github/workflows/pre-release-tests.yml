@@ -10,7 +10,7 @@ on:
 
 jobs:
   integration_tests:
-    runs-on: ubuntu-latest
+    runs-on: hanzo-build-linux-amd64
     strategy:
       matrix:
         # Current go.mod version and latest stable go version
