@@ -1,3 +1,5 @@
+<p align="center"><img src=".github/hero.svg" alt="search-go" width="880"></p>
+
 # Hanzo Search Go SDK
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/hanzoai/search-go.svg)](https://pkg.go.dev/github.com/hanzoai/search-go)
