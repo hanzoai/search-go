@@ -3,12 +3,12 @@ package integration
 import (
 	"context"
 	"crypto/tls"
-	"github.com/hanzoai/search-go"
-	"github.com/stretchr/testify/require"
+	"fmt"
+	"strconv"
 	"testing"
 	"time"
 
-	"github.com/meilisearch/meilisearch-go"
+	"github.com/hanzoai/search-go"
 	"github.com/stretchr/testify/require"
 )
 

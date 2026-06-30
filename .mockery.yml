@@ -13,6 +13,6 @@ require-template-schema-exists: true
 template: testify
 template-schema: '{{.Template}}.schema.json'
 packages:
-  github.com/meilisearch/meilisearch-go:
+  github.com/hanzoai/search-go:
     config:
       include-interface-regex: '^[A-Z].*'

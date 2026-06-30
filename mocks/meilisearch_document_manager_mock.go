@@ -8,7 +8,7 @@ import (
 	"context"
 	"io"
 
-	"github.com/meilisearch/meilisearch-go"
+	"github.com/hanzoai/search-go"
 	mock "github.com/stretchr/testify/mock"
 )
 
