@@ -3,10 +3,14 @@
 # Hanzo Search Go SDK
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/hanzoai/search-go.svg)](https://pkg.go.dev/github.com/hanzoai/search-go)
-[![GitHub Actions](https://github.com/hanzoai/search-go/actions/workflows/tests.yml/badge.svg)](https://github.com/hanzoai/search-go/actions)
-[![License: MIT](https://img.shields.io/badge/license-MIT-informational)](https://github.com/hanzoai/search-go/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-informational)](LICENSE)
 
-Go client SDK for Hanzo Search. Built on Meilisearch Go client.
+Go client for **Hanzo Search** — documents in, ranked results out, over
+full-text, vector and hybrid retrieval. Built on the Meilisearch Go client, so
+the declared Go package is `meilisearch`; alias the import as below.
+
+The search engine itself lives in [`hanzoai/index`](https://github.com/hanzoai/index).
+`hanzoai/search` is an old path that redirects there — one product, not two.
 
 ## Installation
 
