@@ -154,7 +154,6 @@ client := search.New("http://localhost:7700",
 
 ## Attribution
 
-Based on [Meilisearch Go](https://github.com/meilisearch/meilisearch-go). See upstream LICENSE for attribution.
 
 ## License
 
