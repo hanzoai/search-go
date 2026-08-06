@@ -1,0 +1,6 @@
+# ./integration is excluded because it drives a live Meilisearch at
+# localhost:7700 and fails on a refused dial with no server. Everything else —
+# the client, encoding, tasks, options, hits — is a real unit suite and runs.
+test:
+  - name: build
+    run: go build ./... && go test $(go list ./... | grep -v /integration)
