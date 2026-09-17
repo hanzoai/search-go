@@ -305,7 +305,7 @@ func TestGetTaskDocuments(t *testing.T) {
 	// the GetTaskDocuments call.
 	const documentCount = 5000
 	documents := make([]docTest, 0, documentCount)
-	for n := 0; n < documentCount; n++ {
+	for n := range documentCount {
 		documents = append(documents, docTest{
 			ID:   strconv.Itoa(n + 1),
 			Name: fmt.Sprintf("doc-%d", n+1),

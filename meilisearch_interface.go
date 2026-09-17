@@ -62,7 +62,7 @@ type ServiceManager interface {
 	SwapIndexesWithContext(ctx context.Context, param []*SwapIndexesParams) (*TaskInfo, error)
 
 	// GenerateTenantToken generates a tenant token for multi-tenancy.
-	GenerateTenantToken(apiKeyUID string, searchRules map[string]interface{}, options *TenantTokenOptions) (string, error)
+	GenerateTenantToken(apiKeyUID string, searchRules map[string]any, options *TenantTokenOptions) (string, error)
 
 	// CreateDump creates a database dump.
 	//
@@ -135,12 +135,12 @@ type ServiceReader interface {
 	// GetRawIndex fetches the raw JSON representation of a specific index and returns it as a map
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/indexes/get-index
-	GetRawIndex(uid string) (map[string]interface{}, error)
+	GetRawIndex(uid string) (map[string]any, error)
 
 	// GetRawIndexWithContext fetches the raw JSON representation of a specific index and returns it as a map, with a context for cancellation.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/indexes/get-index
-	GetRawIndexWithContext(ctx context.Context, uid string) (map[string]interface{}, error)
+	GetRawIndexWithContext(ctx context.Context, uid string) (map[string]any, error)
 
 	// ListIndexes lists all indexes.
 	//
@@ -155,12 +155,12 @@ type ServiceReader interface {
 	// GetRawIndexes fetches the raw JSON representation of all indexes.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/indexes/list-indexes
-	GetRawIndexes(param *IndexesQuery) (map[string]interface{}, error)
+	GetRawIndexes(param *IndexesQuery) (map[string]any, error)
 
 	// GetRawIndexesWithContext fetches the raw JSON representation of all indexes with a context for cancellation.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/indexes/list-indexes
-	GetRawIndexesWithContext(ctx context.Context, param *IndexesQuery) (map[string]interface{}, error)
+	GetRawIndexesWithContext(ctx context.Context, param *IndexesQuery) (map[string]any, error)
 
 	// MultiSearch performs a multi-index search.
 	//
@@ -319,13 +319,13 @@ type TaskManager interface {
 	// dst must be a non-nil pointer to a slice that receives the streamed NDJSON documents.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/async-task-management/get-tasks-documents
-	GetTaskDocuments(taskUID int64, dst interface{}) error
+	GetTaskDocuments(taskUID int64, dst any) error
 
 	// GetTaskDocumentsWithContext retrieves the documents associated with a task using the provided context for cancellation.
 	// dst must be a non-nil pointer to a slice that receives the streamed NDJSON documents.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/async-task-management/get-tasks-documents
-	GetTaskDocumentsWithContext(ctx context.Context, taskUID int64, dst interface{}) error
+	GetTaskDocumentsWithContext(ctx context.Context, taskUID int64, dst any) error
 }
 
 type TaskReader interface {

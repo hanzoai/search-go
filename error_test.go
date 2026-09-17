@@ -54,7 +54,7 @@ type failEncoder struct{}
 func (f *failEncoder) Encode(r io.Reader) (io.ReadCloser, error) {
 	return nil, nil
 }
-func (f *failEncoder) Decode(_ []byte, v interface{}) error {
+func (f *failEncoder) Decode(_ []byte, v any) error {
 	return fmt.Errorf("decode failed")
 }
 

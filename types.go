@@ -369,19 +369,19 @@ type Embedder struct {
 	//Longer texts are truncated to fit the configured limit.
 	//
 	// documentTemplateMaxBytes must be an integer. It defaults to 400.
-	DocumentTemplateMaxBytes int                    `json:"documentTemplateMaxBytes,omitempty"`
-	Dimensions               int                    `json:"dimensions,omitempty"`   // Optional for "openAi", "rest", "userProvided", "ollama"
-	Revision                 string                 `json:"revision,omitempty"`     // Optional for "huggingFace"
-	Distribution             *Distribution          `json:"distribution,omitempty"` // Optional for all embedders
-	Request                  map[string]interface{} `json:"request,omitempty"`      // Optional for "rest"
-	Response                 map[string]interface{} `json:"response,omitempty"`     // Optional for "rest"
-	Headers                  map[string]string      `json:"headers,omitempty"`      // Optional for "rest"
-	BinaryQuantized          bool                   `json:"binaryQuantized,omitempty"`
-	Pooling                  EmbedderPooling        `json:"pooling,omitempty"`
-	IndexingEmbedder         *Embedder              `json:"indexingEmbedder,omitempty"` // For Composite
-	SearchEmbedder           *Embedder              `json:"searchEmbedder,omitempty"`   // For Composite
-	IndexingFragments        map[string]Fragment    `json:"indexingFragments,omitempty"`
-	SearchFragments          map[string]Fragment    `json:"searchFragments,omitempty"`
+	DocumentTemplateMaxBytes int                 `json:"documentTemplateMaxBytes,omitempty"`
+	Dimensions               int                 `json:"dimensions,omitempty"`   // Optional for "openAi", "rest", "userProvided", "ollama"
+	Revision                 string              `json:"revision,omitempty"`     // Optional for "huggingFace"
+	Distribution             *Distribution       `json:"distribution,omitempty"` // Optional for all embedders
+	Request                  map[string]any      `json:"request,omitempty"`      // Optional for "rest"
+	Response                 map[string]any      `json:"response,omitempty"`     // Optional for "rest"
+	Headers                  map[string]string   `json:"headers,omitempty"`      // Optional for "rest"
+	BinaryQuantized          bool                `json:"binaryQuantized,omitempty"`
+	Pooling                  EmbedderPooling     `json:"pooling,omitempty"`
+	IndexingEmbedder         *Embedder           `json:"indexingEmbedder,omitempty"` // For Composite
+	SearchEmbedder           *Embedder           `json:"searchEmbedder,omitempty"`   // For Composite
+	IndexingFragments        map[string]Fragment `json:"indexingFragments,omitempty"`
+	SearchFragments          map[string]Fragment `json:"searchFragments,omitempty"`
 }
 
 type Fragment struct {
@@ -532,7 +532,7 @@ type Details struct {
 	DisplayedAttributes  []string            `json:"displayedAttributes,omitempty"`
 	StopWords            []string            `json:"stopWords,omitempty"`
 	Synonyms             map[string][]string `json:"synonyms,omitempty"`
-	FilterableAttributes []interface{}       `json:"filterableAttributes,omitempty"`
+	FilterableAttributes []any               `json:"filterableAttributes,omitempty"`
 	SortableAttributes   []string            `json:"sortableAttributes,omitempty"`
 	TypoTolerance        *TypoTolerance      `json:"typoTolerance,omitempty"`
 	Pagination           *Pagination         `json:"pagination,omitempty"`
@@ -610,8 +610,8 @@ type TenantTokenOptions struct {
 
 // TenantTokenClaims custom Claims structure to create a Tenant Token
 type TenantTokenClaims struct {
-	APIKeyUID   string      `json:"apiKeyUid"`
-	SearchRules interface{} `json:"searchRules"`
+	APIKeyUID   string `json:"apiKeyUid"`
+	SearchRules any    `json:"searchRules"`
 	jwt.RegisteredClaims
 }
 
@@ -641,7 +641,7 @@ type SearchRequest struct {
 	HighlightPreTag         string                   `json:"highlightPreTag,omitempty"`
 	HighlightPostTag        string                   `json:"highlightPostTag,omitempty"`
 	MatchingStrategy        MatchingStrategy         `json:"matchingStrategy,omitempty"`
-	Filter                  interface{}              `json:"filter,omitempty"`
+	Filter                  any                      `json:"filter,omitempty"`
 	ShowMatchesPosition     bool                     `json:"showMatchesPosition,omitempty"`
 	ShowRankingScore        bool                     `json:"showRankingScore,omitempty"`
 	ShowRankingScoreDetails bool                     `json:"showRankingScoreDetails,omitempty"`
@@ -729,13 +729,13 @@ type RemoteError struct {
 }
 
 type FacetSearchRequest struct {
-	FacetName            string      `json:"facetName,omitempty"`
-	FacetQuery           string      `json:"facetQuery,omitempty"`
-	Q                    string      `json:"q,omitempty"`
-	Filter               interface{} `json:"filter,omitempty"`
-	MatchingStrategy     string      `json:"matchingStrategy,omitempty"`
-	AttributesToSearchOn []string    `json:"attributesToSearchOn,omitempty"`
-	ExhaustiveFacetCount bool        `json:"exhaustiveFacetCount,omitempty"`
+	FacetName            string   `json:"facetName,omitempty"`
+	FacetQuery           string   `json:"facetQuery,omitempty"`
+	Q                    string   `json:"q,omitempty"`
+	Filter               any      `json:"filter,omitempty"`
+	MatchingStrategy     string   `json:"matchingStrategy,omitempty"`
+	AttributesToSearchOn []string `json:"attributesToSearchOn,omitempty"`
+	ExhaustiveFacetCount bool     `json:"exhaustiveFacetCount,omitempty"`
 }
 
 type FacetSearchResponse struct {
@@ -752,28 +752,28 @@ type DocumentQuery struct {
 
 // DocumentsQuery is the request body for list documents method
 type DocumentsQuery struct {
-	Offset          int64       `json:"offset,omitempty"`
-	Limit           int64       `json:"limit,omitempty"`
-	Fields          []string    `json:"fields,omitempty"`
-	Filter          interface{} `json:"filter,omitempty"`
-	RetrieveVectors bool        `json:"retrieveVectors,omitempty"`
-	Ids             []string    `json:"ids,omitempty"`
-	Sort            []string    `json:"sort,omitempty"`
+	Offset          int64    `json:"offset,omitempty"`
+	Limit           int64    `json:"limit,omitempty"`
+	Fields          []string `json:"fields,omitempty"`
+	Filter          any      `json:"filter,omitempty"`
+	RetrieveVectors bool     `json:"retrieveVectors,omitempty"`
+	Ids             []string `json:"ids,omitempty"`
+	Sort            []string `json:"sort,omitempty"`
 }
 
 // SimilarDocumentQuery is query parameters of similar documents
 type SimilarDocumentQuery struct {
-	Id                      interface{} `json:"id,omitempty"`
-	Embedder                string      `json:"embedder"`
-	AttributesToRetrieve    []string    `json:"attributesToRetrieve,omitempty"`
-	Offset                  int64       `json:"offset,omitempty"`
-	Limit                   int64       `json:"limit,omitempty"`
-	Filter                  string      `json:"filter,omitempty"`
-	ShowRankingScore        bool        `json:"showRankingScore,omitempty"`
-	ShowRankingScoreDetails bool        `json:"showRankingScoreDetails,omitempty"`
-	ShowPerformanceDetails  bool        `json:"showPerformanceDetails,omitempty"`
-	RankingScoreThreshold   float64     `json:"rankingScoreThreshold,omitempty"`
-	RetrieveVectors         bool        `json:"retrieveVectors,omitempty"`
+	Id                      any      `json:"id,omitempty"`
+	Embedder                string   `json:"embedder"`
+	AttributesToRetrieve    []string `json:"attributesToRetrieve,omitempty"`
+	Offset                  int64    `json:"offset,omitempty"`
+	Limit                   int64    `json:"limit,omitempty"`
+	Filter                  string   `json:"filter,omitempty"`
+	ShowRankingScore        bool     `json:"showRankingScore,omitempty"`
+	ShowRankingScoreDetails bool     `json:"showRankingScoreDetails,omitempty"`
+	ShowPerformanceDetails  bool     `json:"showPerformanceDetails,omitempty"`
+	RankingScoreThreshold   float64  `json:"rankingScoreThreshold,omitempty"`
+	RetrieveVectors         bool     `json:"retrieveVectors,omitempty"`
 }
 
 type SimilarDocumentResult struct {
@@ -815,9 +815,9 @@ type DocumentsResult struct {
 }
 
 type UpdateDocumentByFunctionRequest struct {
-	Filter   string                 `json:"filter,omitempty"`
-	Function string                 `json:"function"`
-	Context  map[string]interface{} `json:"context,omitempty"`
+	Filter   string         `json:"filter,omitempty"`
+	Function string         `json:"function"`
+	Context  map[string]any `json:"context,omitempty"`
 	// TaskCustomMetadata is the custom metadata to add to the task.
 	// This string will be associated with the task and visible in the task details.
 	// It is optional.
@@ -874,23 +874,23 @@ func (s *SearchRequest) validate() {
 }
 
 // JSONMarshal returns the JSON encoding of v.
-type JSONMarshal func(v interface{}) ([]byte, error)
+type JSONMarshal func(v any) ([]byte, error)
 
 // JSONUnmarshal parses the JSON-encoded data and stores the result
 // in the value pointed to by v. If v is nil or not a pointer,
 // Unmarshal returns an InvalidUnmarshalError.
-type JSONUnmarshal func(data []byte, v interface{}) error
+type JSONUnmarshal func(data []byte, v any) error
 
 // Batch gives information about the progress of batch of asynchronous operations.
 type Batch struct {
-	UID           int                    `json:"uid"`
-	Progress      *BatchProgress         `json:"progress,omitempty"`
-	Details       map[string]interface{} `json:"details,omitempty"`
-	Stats         *BatchStats            `json:"stats,omitempty"`
-	Duration      string                 `json:"duration,omitempty"`
-	StartedAt     time.Time              `json:"startedAt,omitempty"`
-	FinishedAt    time.Time              `json:"finishedAt,omitempty"`
-	BatchStrategy string                 `json:"batchStrategy,omitempty"`
+	UID           int            `json:"uid"`
+	Progress      *BatchProgress `json:"progress,omitempty"`
+	Details       map[string]any `json:"details,omitempty"`
+	Stats         *BatchStats    `json:"stats,omitempty"`
+	Duration      string         `json:"duration,omitempty"`
+	StartedAt     time.Time      `json:"startedAt,omitempty"`
+	FinishedAt    time.Time      `json:"finishedAt,omitempty"`
+	BatchStrategy string         `json:"batchStrategy,omitempty"`
 }
 
 type BatchProgress struct {

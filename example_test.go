@@ -13,7 +13,7 @@ func ExampleNew() {
 	idx := meili.Index("movies")
 
 	// If the index 'movies' does not exist, Meilisearch creates it when you first add the documents.
-	documents := []map[string]interface{}{
+	documents := []map[string]any{
 		{"id": 1, "title": "Carol", "genres": []string{"Romance", "Drama"}},
 		{"id": 2, "title": "Wonder Woman", "genres": []string{"Action", "Adventure"}},
 		{"id": 3, "title": "Life of Pi", "genres": []string{"Adventure", "Drama"}},

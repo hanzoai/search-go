@@ -79,7 +79,7 @@ func BenchmarkGzipDecoder(b *testing.B) {
 	b.ReportAllocs()
 
 	for i := 0; i < b.N; i++ {
-		var result map[string]interface{}
+		var result map[string]any
 		if err := encoder.Decode(payload, &result); err != nil {
 			b.Fatalf("Decode failed: %v", err)
 		}
@@ -100,7 +100,7 @@ func BenchmarkFlateDecoder(b *testing.B) {
 	b.ReportAllocs()
 
 	for i := 0; i < b.N; i++ {
-		var result map[string]interface{}
+		var result map[string]any
 		if err := encoder.Decode(payload, &result); err != nil {
 			b.Fatalf("Decode failed: %v", err)
 		}
@@ -121,15 +121,15 @@ func BenchmarkBrotliDecoder(b *testing.B) {
 	b.ReportAllocs()
 
 	for i := 0; i < b.N; i++ {
-		var result map[string]interface{}
+		var result map[string]any
 		if err := encoder.Decode(payload, &result); err != nil {
 			b.Fatalf("Decode failed: %v", err)
 		}
 	}
 }
 
-func sampleMapData() map[string]interface{} {
-	return map[string]interface{}{
+func sampleMapData() map[string]any {
+	return map[string]any{
 		"key1": "value1",
 		"key2": 12345,
 		"key3": []string{"item1", "item2", "item3"},

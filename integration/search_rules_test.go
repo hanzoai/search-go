@@ -26,12 +26,12 @@ func Test_ListSearchRule(t *testing.T) {
 	for i, uid := range uids {
 		_, err := sv.UpdateSearchRule(uid, &meilisearch.SearchRulesRequest{
 			Description: fmt.Sprintf("Rule %d for %s", i, uid),
-			Priority:    intPtr(i + 1),
-			Active:      boolPtr(true),
+			Priority:    new(i + 1),
+			Active:      new(true),
 			Conditions: []meilisearch.Condition{
 				{
 					Scope:   "query",
-					IsEmpty: boolPtr(true),
+					IsEmpty: new(true),
 				},
 				{
 					Scope: "time",
@@ -89,7 +89,7 @@ func Test_ListSearchRule(t *testing.T) {
 			Offset: 0,
 			Limit:  20,
 			Filter: &meilisearch.SearchRulesFilter{
-				Active: boolPtr(false),
+				Active: new(false),
 			},
 		})
 		require.NoError(t, err)
@@ -127,12 +127,12 @@ func Test_UpdateSearchRule(t *testing.T) {
 	t.Run("create new rule", func(t *testing.T) {
 		rule, err := sv.UpdateSearchRule(uid, &meilisearch.SearchRulesRequest{
 			Description: "Promotional campaign rules",
-			Priority:    intPtr(10),
-			Active:      boolPtr(true),
+			Priority:    new(10),
+			Active:      new(true),
 			Conditions: []meilisearch.Condition{
 				{
 					Scope:   "query",
-					IsEmpty: boolPtr(true),
+					IsEmpty: new(true),
 				},
 				{
 					Scope: "time",
@@ -166,12 +166,12 @@ func Test_UpdateSearchRule(t *testing.T) {
 	t.Run("update existing rule", func(t *testing.T) {
 		updatedRule, err := sv.UpdateSearchRule(uid, &meilisearch.SearchRulesRequest{
 			Description: "Updated promotional campaign rules",
-			Priority:    intPtr(8),
-			Active:      boolPtr(false),
+			Priority:    new(8),
+			Active:      new(false),
 			Conditions: []meilisearch.Condition{
 				{
 					Scope:   "query",
-					IsEmpty: boolPtr(false),
+					IsEmpty: new(false),
 				},
 			},
 			Actions: []meilisearch.Action{
@@ -230,12 +230,12 @@ func Test_GetSearchRule(t *testing.T) {
 
 	want, err := sv.UpdateSearchRule(uid, &meilisearch.SearchRulesRequest{
 		Description: "Black Friday 2025 rules",
-		Priority:    intPtr(5),
-		Active:      boolPtr(true),
+		Priority:    new(5),
+		Active:      new(true),
 		Conditions: []meilisearch.Condition{
 			{
 				Scope:   "query",
-				IsEmpty: boolPtr(true),
+				IsEmpty: new(true),
 			},
 			{
 				Scope: "time",
@@ -277,12 +277,12 @@ func Test_DeleteSearchRule(t *testing.T) {
 	end := start.Add(time.Hour * 1)
 	_, err = sv.UpdateSearchRule(uid, &meilisearch.SearchRulesRequest{
 		Description: "Black Friday 2025 rules",
-		Priority:    intPtr(5),
-		Active:      boolPtr(true),
+		Priority:    new(5),
+		Active:      new(true),
 		Conditions: []meilisearch.Condition{
 			{
 				Scope:   "query",
-				IsEmpty: boolPtr(true),
+				IsEmpty: new(true),
 			},
 			{
 				Scope: "time",

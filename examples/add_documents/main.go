@@ -53,7 +53,7 @@ func main() {
 		{ID: 3, Name: "Charlie Brown", Email: "charlie@example.com", Role: "moderator", Active: false, JoinDate: "2023-03-10"},
 	}
 
-	task, err := index.AddDocuments(users, &meilisearch.DocumentOptions{PrimaryKey: meilisearch.StringPtr("id")})
+	task, err := index.AddDocuments(users, &meilisearch.DocumentOptions{PrimaryKey: new("id")})
 	if err != nil {
 		log.Fatalf("Failed to add documents: %v", err)
 	}

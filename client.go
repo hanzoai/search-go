@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -45,8 +46,8 @@ type internalRequest struct {
 	endpoint             string
 	method               string
 	contentType          string
-	withRequest          interface{}
-	withResponse         interface{}
+	withRequest          any
+	withResponse         any
 	withQueryParams      map[string]string
 	withResponseEncoding bool
 
@@ -62,7 +63,7 @@ func newClient(cli *http.Client, host, apiKey string, cfg *clientConfig) *client
 		host:   host,
 		apiKey: apiKey,
 		bufferPool: &sync.Pool{
-			New: func() interface{} {
+			New: func() any {
 				return new(bytes.Buffer)
 			},
 		},
@@ -217,10 +218,8 @@ func (c *client) handleStreamingStatusCode(req *internalRequest, resp *http.Resp
 		return nil
 	}
 
-	for _, acceptedCode := range req.acceptedStatusCodes {
-		if resp.StatusCode == acceptedCode {
-			return nil
-		}
+	if slices.Contains(req.acceptedStatusCodes, resp.StatusCode) {
+		return nil
 	}
 
 	if responseUsesClientEncoding(resp, c.contentEncoding) {
@@ -246,13 +245,13 @@ func (c *client) handleContentType(req *internalRequest, resp *http.Response, in
 	return nil
 }
 
-func validateNDJSONDestination(functionName string, dst interface{}) (reflect.Value, reflect.Type, error) {
+func validateNDJSONDestination(functionName string, dst any) (reflect.Value, reflect.Type, error) {
 	if dst == nil {
 		return reflect.Value{}, nil, fmt.Errorf("%s: dst must be a non-nil pointer to a slice", functionName)
 	}
 
 	dstValue := reflect.ValueOf(dst)
-	if dstValue.Kind() != reflect.Ptr || dstValue.IsNil() {
+	if dstValue.Kind() != reflect.Pointer || dstValue.IsNil() {
 		return reflect.Value{}, nil, fmt.Errorf("%s: dst must be a non-nil pointer to a slice", functionName)
 	}
 
@@ -418,10 +417,8 @@ func (c *client) handleStatusCode(req *internalRequest, statusCode int, body []b
 
 		// A successful status code is required so check if the response status code is in the
 		// expected status code list.
-		for _, acceptedCode := range req.acceptedStatusCodes {
-			if statusCode == acceptedCode {
-				return nil
-			}
+		if slices.Contains(req.acceptedStatusCodes, statusCode) {
+			return nil
 		}
 
 		internalError.ErrorBody(body)

@@ -64,7 +64,7 @@ func Test_ListWebhooks(t *testing.T) {
 	t.Cleanup(cleanupWebhook(sv))
 
 	n := 5
-	for i := 0; i < n; i++ {
+	for i := range n {
 		_, err := sv.AddWebhook(&meilisearch.AddWebhookRequest{
 			URL:     fmt.Sprintf("http://example_%d.com", i),
 			Headers: map[string]string{"FOO": "BAR"},

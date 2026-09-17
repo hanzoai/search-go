@@ -36,7 +36,7 @@ func (m *mockEncoder) Encode(r io.Reader) (io.ReadCloser, error) {
 	return nil, nil
 }
 
-func (m *mockEncoder) Decode(data []byte, v interface{}) error {
+func (m *mockEncoder) Decode(data []byte, v any) error {
 	msg, ok := v.(*meilisearchApiError)
 	if !ok {
 		return fmt.Errorf("wrong type")
@@ -55,7 +55,7 @@ func (m *mockEncoder) Decoder(r io.Reader) (streamDecoder, error) {
 func Test_Encode_ErrorOnNewWriter(t *testing.T) {
 	g := &gzipEncoder{
 		gzWriterPool: &sync.Pool{
-			New: func() interface{} {
+			New: func() any {
 				return &gzipWriter{
 					writer: nil,
 					err:    errors.New("new writer error"),
@@ -63,14 +63,14 @@ func Test_Encode_ErrorOnNewWriter(t *testing.T) {
 			},
 		},
 		bufferPool: &sync.Pool{
-			New: func() interface{} {
+			New: func() any {
 				return new(bytes.Buffer)
 			},
 		},
 	}
 	d := &flateEncoder{
 		flWriterPool: &sync.Pool{
-			New: func() interface{} {
+			New: func() any {
 				return &flateWriter{
 					writer: nil,
 					err:    errors.New("new writer error"),
@@ -78,7 +78,7 @@ func Test_Encode_ErrorOnNewWriter(t *testing.T) {
 			},
 		},
 		bufferPool: &sync.Pool{
-			New: func() interface{} {
+			New: func() any {
 				return new(bytes.Buffer)
 			},
 		},
@@ -211,17 +211,15 @@ func TestCopyZeroAlloc(t *testing.T) {
 		data := "concurrent data"
 		var mu sync.Mutex
 		dst := &bytes.Buffer{}
-		for i := 0; i < 10; i++ {
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
+		for range 10 {
+			wg.Go(func() {
 				src := strings.NewReader(data)
 				buf := &bytes.Buffer{}
 				_, _ = copyZeroAlloc(buf, src)
 				mu.Lock()
 				defer mu.Unlock()
 				dst.Write(buf.Bytes())
-			}()
+			})
 		}
 		wg.Wait()
 		mu.Lock()

@@ -34,7 +34,7 @@ func (fe failingEncoder) Encode(r io.Reader) (io.ReadCloser, error) {
 }
 
 // Implement Decode method to satisfy the encoder interface, though it won't be used here
-func (fe failingEncoder) Decode(b []byte, v interface{}) error {
+func (fe failingEncoder) Decode(b []byte, v any) error {
 	return errors.New("dummy decode failure")
 }
 
@@ -165,7 +165,7 @@ func TestExecuteRequest(t *testing.T) {
 	tests := []struct {
 		name            string
 		internalReq     *internalRequest
-		expectedResp    interface{}
+		expectedResp    any
 		contentEncoding ContentEncoding
 		withTimeout     bool
 		disableRetry    bool

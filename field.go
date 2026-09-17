@@ -21,22 +21,34 @@ func Float(v float64) Opt[float64] { return NewOpt(v) }
 func String(v string) Opt[string] { return NewOpt(v) }
 
 // IntPtr returns a pointer to the given int value.
-func IntPtr(v int) *int { return &v }
+//
+//go:fix inline
+func IntPtr(v int) *int { return new(v) }
 
 // Int64Ptr returns a pointer to the given int64 value.
-func Int64Ptr(v int64) *int64 { return &v }
+//
+//go:fix inline
+func Int64Ptr(v int64) *int64 { return new(v) }
 
 // BoolPtr returns a pointer to the given bool value.
-func BoolPtr(v bool) *bool { return &v }
+//
+//go:fix inline
+func BoolPtr(v bool) *bool { return new(v) }
 
 // FloatPtr returns a pointer to the given float64 value.
-func FloatPtr(v float64) *float64 { return &v }
+//
+//go:fix inline
+func FloatPtr(v float64) *float64 { return new(v) }
 
 // StringPtr returns a pointer to the given string value.
-func StringPtr(v string) *string { return &v }
+//
+//go:fix inline
+func StringPtr(v string) *string { return new(v) }
 
 // TimePtr returns a pointer to the given time.Time value.
-func TimePtr(v time.Time) *time.Time { return &v }
+//
+//go:fix inline
+func TimePtr(v time.Time) *time.Time { return new(v) }
 
 type status int8
 

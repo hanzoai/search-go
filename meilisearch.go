@@ -101,12 +101,12 @@ func (m *meilisearch) GetIndexWithContext(ctx context.Context, indexID string) (
 	return newIndex(m.client, indexID).FetchInfoWithContext(ctx)
 }
 
-func (m *meilisearch) GetRawIndex(uid string) (map[string]interface{}, error) {
+func (m *meilisearch) GetRawIndex(uid string) (map[string]any, error) {
 	return m.GetRawIndexWithContext(context.Background(), uid)
 }
 
-func (m *meilisearch) GetRawIndexWithContext(ctx context.Context, uid string) (map[string]interface{}, error) {
-	resp := map[string]interface{}{}
+func (m *meilisearch) GetRawIndexWithContext(ctx context.Context, uid string) (map[string]any, error) {
+	resp := map[string]any{}
 	req := &internalRequest{
 		endpoint:            "/indexes/" + uid,
 		method:              http.MethodGet,
@@ -153,12 +153,12 @@ func (m *meilisearch) ListIndexesWithContext(ctx context.Context, param *Indexes
 	return resp, nil
 }
 
-func (m *meilisearch) GetRawIndexes(param *IndexesQuery) (map[string]interface{}, error) {
+func (m *meilisearch) GetRawIndexes(param *IndexesQuery) (map[string]any, error) {
 	return m.GetRawIndexesWithContext(context.Background(), param)
 }
 
-func (m *meilisearch) GetRawIndexesWithContext(ctx context.Context, param *IndexesQuery) (map[string]interface{}, error) {
-	resp := map[string]interface{}{}
+func (m *meilisearch) GetRawIndexesWithContext(ctx context.Context, param *IndexesQuery) (map[string]any, error) {
+	resp := map[string]any{}
 	req := &internalRequest{
 		endpoint:            "/indexes",
 		method:              http.MethodGet,
@@ -497,7 +497,7 @@ func (m *meilisearch) WaitForTaskWithContext(ctx context.Context, taskUID int64,
 
 func (m *meilisearch) GenerateTenantToken(
 	apiKeyUID string,
-	searchRules map[string]interface{},
+	searchRules map[string]any,
 	options *TenantTokenOptions,
 ) (string, error) {
 	// validate the arguments

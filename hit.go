@@ -16,8 +16,8 @@ type (
 // Deprecated: Decode decodes a single Hit into the provided struct.
 //
 // Please use DecodeInto for better performance without intermediate marshaling.
-func (h Hit) Decode(vPtr interface{}) error {
-	if vPtr == nil || reflect.ValueOf(vPtr).Kind() != reflect.Ptr {
+func (h Hit) Decode(vPtr any) error {
+	if vPtr == nil || reflect.ValueOf(vPtr).Kind() != reflect.Pointer {
 		return errors.New("vPtr must be a non-nil pointer")
 	}
 
@@ -35,7 +35,7 @@ func (h Hit) DecodeInto(out any) error {
 		return errors.New("out must be a non-nil pointer")
 	}
 	rv := reflect.ValueOf(out)
-	if rv.Kind() != reflect.Ptr || rv.IsNil() {
+	if rv.Kind() != reflect.Pointer || rv.IsNil() {
 		return errors.New("out must be a non-nil pointer")
 	}
 	rv = rv.Elem()
@@ -109,8 +109,8 @@ func (h Hit) DecodeInto(out any) error {
 }
 
 // DecodeWith decodes a Hit into the provided struct using the provided marshal and unmarshal functions.
-func (h Hit) DecodeWith(vPtr interface{}, marshal JSONMarshal, unmarshal JSONUnmarshal) error {
-	if vPtr == nil || reflect.ValueOf(vPtr).Kind() != reflect.Ptr {
+func (h Hit) DecodeWith(vPtr any, marshal JSONMarshal, unmarshal JSONUnmarshal) error {
+	if vPtr == nil || reflect.ValueOf(vPtr).Kind() != reflect.Pointer {
 		return errors.New("vPtr must be a non-nil pointer")
 	}
 
@@ -129,10 +129,10 @@ func (h Hits) Len() int {
 // Deprecated: Decode decodes the Hits into the provided target slice.
 //
 // Please use DecodeInto for better performance without intermediate marshaling.
-func (h Hits) Decode(vSlicePtr interface{}) error {
+func (h Hits) Decode(vSlicePtr any) error {
 	v := reflect.ValueOf(vSlicePtr)
 
-	if v.Kind() != reflect.Ptr || v.Elem().Kind() != reflect.Slice {
+	if v.Kind() != reflect.Pointer || v.Elem().Kind() != reflect.Slice {
 		return fmt.Errorf("v must be a pointer to a slice, got %T", vSlicePtr)
 	}
 
@@ -146,10 +146,10 @@ func (h Hits) Decode(vSlicePtr interface{}) error {
 }
 
 // DecodeWith decodes a Hits into the provided struct using the provided marshal and unmarshal functions.
-func (h Hits) DecodeWith(vSlicePtr interface{}, marshal JSONMarshal, unmarshal JSONUnmarshal) error {
+func (h Hits) DecodeWith(vSlicePtr any, marshal JSONMarshal, unmarshal JSONUnmarshal) error {
 	v := reflect.ValueOf(vSlicePtr)
 
-	if v.Kind() != reflect.Ptr || v.Elem().Kind() != reflect.Slice {
+	if v.Kind() != reflect.Pointer || v.Elem().Kind() != reflect.Slice {
 		return errors.New("v must be a pointer to a slice")
 	}
 
@@ -171,12 +171,12 @@ func (h Hits) DecodeWith(vSlicePtr interface{}, marshal JSONMarshal, unmarshal J
 //
 //	var outPtr []*exampleBookForTest
 //	if err := hits.DecodeInto(&outPtr); err != nil { ... }
-func (h Hits) DecodeInto(vSlicePtr interface{}) error {
+func (h Hits) DecodeInto(vSlicePtr any) error {
 	if vSlicePtr == nil {
 		return fmt.Errorf("vSlicePtr must be a non-nil pointer to a slice")
 	}
 	rv := reflect.ValueOf(vSlicePtr)
-	if rv.Kind() != reflect.Ptr || rv.IsNil() {
+	if rv.Kind() != reflect.Pointer || rv.IsNil() {
 		return fmt.Errorf("vSlicePtr must be a non-nil pointer, got %T", vSlicePtr)
 	}
 	sv := rv.Elem()
@@ -197,7 +197,7 @@ func (h Hits) DecodeInto(vSlicePtr interface{}) error {
 			out = reflect.Append(out, elemPtr.Elem())
 		}
 
-	case reflect.Ptr:
+	case reflect.Pointer:
 		et := elemType.Elem()
 		switch et.Kind() {
 		case reflect.Struct:
@@ -319,7 +319,7 @@ func collectFields(t reflect.Type, prefix []int) []fieldMeta {
 		// Inline embedded struct or *struct (pointer-embedded) when not renamed.
 		if sf.Anonymous && name == sf.Name {
 			u := sf.Type
-			if u.Kind() == reflect.Ptr {
+			if u.Kind() == reflect.Pointer {
 				u = u.Elem()
 			}
 			if u.Kind() == reflect.Struct {
@@ -368,7 +368,7 @@ func hasJSONTagOption(opts, opt string) bool {
 func fieldByIndexPathAlloc(rv reflect.Value, indexPath []int) (reflect.Value, bool) {
 	cur := rv
 	for _, idx := range indexPath {
-		if cur.Kind() == reflect.Ptr {
+		if cur.Kind() == reflect.Pointer {
 			if cur.IsNil() {
 				if !cur.CanSet() {
 					return reflect.Value{}, false
@@ -390,7 +390,7 @@ func fieldByIndexPathAlloc(rv reflect.Value, indexPath []int) (reflect.Value, bo
 
 		cur = cur.Field(idx)
 	}
-	if cur.Kind() == reflect.Ptr && cur.IsNil() {
+	if cur.Kind() == reflect.Pointer && cur.IsNil() {
 		if cur.CanSet() && cur.Type().Elem().Kind() == reflect.Struct {
 			cur.Set(reflect.New(cur.Type().Elem()))
 		}

@@ -1,4 +1,4 @@
-FROM golang:1.26.5-bookworm
+FROM golang:1.27.1-bookworm
 # go.mod pins the toolchain. The golang base image sets GOTOOLCHAIN=local,
 # which turns a `go` directive newer than the image into a hard build
 # failure instead of a download.

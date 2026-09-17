@@ -525,7 +525,7 @@ func TestUpdateNetworkRequest_RoundTrip(t *testing.T) {
 	require.NoError(t, err)
 
 	// Verify JSON structure
-	var result map[string]interface{}
+	var result map[string]any
 	err = json.Unmarshal(data, &result)
 	require.NoError(t, err)
 

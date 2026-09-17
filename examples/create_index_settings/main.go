@@ -81,7 +81,7 @@ func main() {
 		},
 
 		// Distinct attribute - deduplicate results
-		DistinctAttribute: stringPtr("title"),
+		DistinctAttribute: new("title"),
 
 		// Typo tolerance settings
 		TypoTolerance: &meilisearch.TypoTolerance{
@@ -129,11 +129,6 @@ func waitForTask(client meilisearch.ServiceManager, taskUID int64) error {
 
 	_, err := client.WaitForTaskWithContext(ctx, taskUID, 100*time.Millisecond)
 	return err
-}
-
-// stringPtr returns a pointer to a string
-func stringPtr(s string) *string {
-	return &s
 }
 
 // getenv returns the value of the environment variable named by the key,

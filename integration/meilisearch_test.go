@@ -1765,10 +1765,8 @@ func Test_ConnectionCloseByServer(t *testing.T) {
 
 	// Simulate 10 clients sending requests.
 	g := sync.WaitGroup{}
-	for i := 0; i < 10; i++ {
-		g.Add(1)
-		go func() {
-			defer g.Done()
+	for range 10 {
+		g.Go(func() {
 
 			_, _ = sv.Index("foo").Search("bar", &meilisearch.SearchRequest{})
 			time.Sleep(5 * time.Second)
@@ -1777,7 +1775,7 @@ func Test_ConnectionCloseByServer(t *testing.T) {
 			if errors.As(err, &e) && e.ErrCode == meilisearch.MeilisearchCommunicationError {
 				require.NoErrorf(t, e, "unexpected meilisearch.Error")
 			}
-		}()
+		})
 	}
 	g.Wait()
 }
@@ -1790,9 +1788,9 @@ func Test_GenerateTenantToken(t *testing.T) {
 		IndexUIDS   string
 		client      meilisearch.ServiceManager
 		APIKeyUID   string
-		searchRules map[string]interface{}
+		searchRules map[string]any
 		options     *meilisearch.TenantTokenOptions
-		filter      []interface{}
+		filter      []any
 	}
 	tests := []struct {
 		name       string
@@ -1806,7 +1804,7 @@ func Test_GenerateTenantToken(t *testing.T) {
 				IndexUIDS: "TestDefaultGenerateTenantToken",
 				client:    privateSv,
 				APIKeyUID: getPrivateUIDKey(sv),
-				searchRules: map[string]interface{}{
+				searchRules: map[string]any{
 					"*": map[string]string{},
 				},
 				options: nil,
@@ -1821,7 +1819,7 @@ func Test_GenerateTenantToken(t *testing.T) {
 				IndexUIDS: "TestGenerateTenantTokenWithApiKey",
 				client:    sv,
 				APIKeyUID: getPrivateUIDKey(sv),
-				searchRules: map[string]interface{}{
+				searchRules: map[string]any{
 					"*": map[string]string{},
 				},
 				options: &meilisearch.TenantTokenOptions{
@@ -1838,7 +1836,7 @@ func Test_GenerateTenantToken(t *testing.T) {
 				IndexUIDS: "TestGenerateTenantTokenWithOnlyExpiresAt",
 				client:    privateSv,
 				APIKeyUID: getPrivateUIDKey(sv),
-				searchRules: map[string]interface{}{
+				searchRules: map[string]any{
 					"*": map[string]string{},
 				},
 				options: &meilisearch.TenantTokenOptions{
@@ -1855,7 +1853,7 @@ func Test_GenerateTenantToken(t *testing.T) {
 				IndexUIDS: "TestGenerateTenantTokenWithApiKeyAndExpiresAt",
 				client:    sv,
 				APIKeyUID: getPrivateUIDKey(sv),
-				searchRules: map[string]interface{}{
+				searchRules: map[string]any{
 					"*": map[string]string{},
 				},
 				options: &meilisearch.TenantTokenOptions{
@@ -1873,19 +1871,19 @@ func Test_GenerateTenantToken(t *testing.T) {
 				IndexUIDS: "indexUID",
 				client:    privateSv,
 				APIKeyUID: getPrivateUIDKey(sv),
-				searchRules: map[string]interface{}{
+				searchRules: map[string]any{
 					"*": map[string]string{
 						"filter": "book_id > 1000",
 					},
 				},
 				options: nil,
-				filter: []interface{}{
+				filter: []any{
 					"year",
-					map[string]interface{}{
-						"attributePatterns": []interface{}{"book_id"},
-						"features": map[string]interface{}{
+					map[string]any{
+						"attributePatterns": []any{"book_id"},
+						"features": map[string]any{
 							"facetSearch": false,
-							"filter": map[string]interface{}{
+							"filter": map[string]any{
 								"equality":   false,
 								"comparison": true,
 							},
@@ -1902,13 +1900,13 @@ func Test_GenerateTenantToken(t *testing.T) {
 				IndexUIDS: "indexUID",
 				client:    privateSv,
 				APIKeyUID: getPrivateUIDKey(sv),
-				searchRules: map[string]interface{}{
+				searchRules: map[string]any{
 					"*": map[string]string{
 						"filter": "book_id > 1000",
 					},
 				},
 				options: nil,
-				filter: []interface{}{
+				filter: []any{
 					"book_id",
 				},
 			},
@@ -1921,13 +1919,13 @@ func Test_GenerateTenantToken(t *testing.T) {
 				IndexUIDS: "indexUID",
 				client:    privateSv,
 				APIKeyUID: getPrivateUIDKey(sv),
-				searchRules: map[string]interface{}{
+				searchRules: map[string]any{
 					"indexUID": map[string]string{
 						"filter": "year > 2000",
 					},
 				},
 				options: nil,
-				filter: []interface{}{
+				filter: []any{
 					"year",
 				},
 			},
@@ -1953,7 +1951,7 @@ func Test_GenerateTenantToken(t *testing.T) {
 				IndexUIDS: "TestGenerateTenantTokenWithoutApiKey",
 				client:    setup(t, "", meilisearch.WithAPIKey("")),
 				APIKeyUID: getPrivateUIDKey(sv),
-				searchRules: map[string]interface{}{
+				searchRules: map[string]any{
 					"*": map[string]string{},
 				},
 				options: nil,
@@ -1968,7 +1966,7 @@ func Test_GenerateTenantToken(t *testing.T) {
 				IndexUIDS: "TestGenerateTenantTokenWithBadExpiresAt",
 				client:    sv,
 				APIKeyUID: getPrivateUIDKey(sv),
-				searchRules: map[string]interface{}{
+				searchRules: map[string]any{
 					"*": map[string]string{},
 				},
 				options: &meilisearch.TenantTokenOptions{
@@ -1985,7 +1983,7 @@ func Test_GenerateTenantToken(t *testing.T) {
 				IndexUIDS: "TestGenerateTenantTokenWithBadAPIKeyUID",
 				client:    sv,
 				APIKeyUID: getPrivateUIDKey(sv) + "1234",
-				searchRules: map[string]interface{}{
+				searchRules: map[string]any{
 					"*": map[string]string{},
 				},
 				options: nil,
@@ -2000,7 +1998,7 @@ func Test_GenerateTenantToken(t *testing.T) {
 				IndexUIDS: "TestGenerateTenantTokenWithEmptyAPIKeyUID",
 				client:    sv,
 				APIKeyUID: "",
-				searchRules: map[string]interface{}{
+				searchRules: map[string]any{
 					"*": map[string]string{},
 				},
 				options: nil,
@@ -2159,19 +2157,19 @@ func TestClient_MultiSearch(t *testing.T) {
 				Results: nil,
 				Hits: meilisearch.Hits{
 					{
-						"_federation": toRawMessage(map[string]interface{}{
+						"_federation": toRawMessage(map[string]any{
 							"indexUid": "TestClientMultiSearchOnTwoIndexes2", "queriesPosition": 1.0, "weightedRankingScore": 0.8787878787878788,
 						}),
 						"book_id": toRawMessage(456), "title": toRawMessage("Le Petit Prince"),
 					},
 					{
-						"_federation": toRawMessage(map[string]interface{}{
+						"_federation": toRawMessage(map[string]any{
 							"indexUid": "TestClientMultiSearchOnTwoIndexes1", "queriesPosition": 0.0, "weightedRankingScore": 0.8712121212121212,
 						}),
 						"book_id": toRawMessage(1), "title": toRawMessage("Alice In Wonderland"),
 					},
 					{
-						"_federation": toRawMessage(map[string]interface{}{
+						"_federation": toRawMessage(map[string]any{
 							"indexUid": "TestClientMultiSearchOnTwoIndexes2", "queriesPosition": 1.0, "weightedRankingScore": 0.8333333333333334,
 						}),
 						"book_id": toRawMessage(4), "title": toRawMessage("Harry Potter and the Half-Blood Prince"),
@@ -2224,7 +2222,7 @@ func TestClient_MultiSearch(t *testing.T) {
 						"overview":     toRawMessage("Follow the adventures of the Dark Knight as he battles crime in Gotham City."),
 						"cover":        toRawMessage("https://example.com/comics/batman.jpg"),
 						"release_date": toRawMessage(1625097600),
-						"_federation": toRawMessage(map[string]interface{}{
+						"_federation": toRawMessage(map[string]any{
 							"indexUid":             "comics",
 							"queriesPosition":      1,
 							"weightedRankingScore": toRawMessage(1.0),
@@ -2237,7 +2235,7 @@ func TestClient_MultiSearch(t *testing.T) {
 						"overview":     toRawMessage("When a sadistic serial killer begins murdering key political figures in Gotham, the Batman is forced to investigate the city's hidden corruption and question his family's involvement."),
 						"poster":       toRawMessage("https://example.com/comics/batman.jpg"),
 						"release_date": toRawMessage(1625097600),
-						"_federation": toRawMessage(map[string]interface{}{
+						"_federation": toRawMessage(map[string]any{
 							"indexUid":             "movies",
 							"queriesPosition":      0,
 							"weightedRankingScore": 0.9242424242424242,
@@ -2293,7 +2291,7 @@ func TestClient_MultiSearch(t *testing.T) {
 						"overview":     toRawMessage("Follow the adventures of the Dark Knight as he battles crime in Gotham City."),
 						"cover":        toRawMessage("https://example.com/comics/batman.jpg"),
 						"release_date": toRawMessage(1625097600),
-						"_federation": toRawMessage(map[string]interface{}{
+						"_federation": toRawMessage(map[string]any{
 							"indexUid":             "comics",
 							"queriesPosition":      1,
 							"weightedRankingScore": toRawMessage(1.0),
@@ -2306,7 +2304,7 @@ func TestClient_MultiSearch(t *testing.T) {
 						"overview":     toRawMessage("When a sadistic serial killer begins murdering key political figures in Gotham, the Batman is forced to investigate the city's hidden corruption and question his family's involvement."),
 						"poster":       toRawMessage("https://example.com/comics/batman.jpg"),
 						"release_date": toRawMessage(1625097600),
-						"_federation": toRawMessage(map[string]interface{}{
+						"_federation": toRawMessage(map[string]any{
 							"indexUid":             "movies",
 							"queriesPosition":      0,
 							"weightedRankingScore": 0.9242424242424242,
@@ -2375,8 +2373,8 @@ func TestClient_MultiSearch(t *testing.T) {
 					require.Equal(t, len(tt.want.Hits), len(got.Hits))
 
 					var (
-						wants map[string]interface{}
-						gots  map[string]interface{}
+						wants map[string]any
+						gots  map[string]any
 					)
 
 					err := tt.want.Hits[i].DecodeInto(&wants)

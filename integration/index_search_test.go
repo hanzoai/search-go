@@ -131,7 +131,7 @@ func TestIndex_SearchWithContentEncoding(t *testing.T) {
 			require.NoError(t, err, "error unmarshalling raw got meilisearch.SearchResponse")
 			require.Equal(t, len(tt.Response.Hits), len(resp.Hits))
 
-			filterableAttrs := []interface{}{"tag"}
+			filterableAttrs := []any{"tag"}
 			task, err := i.UpdateFilterableAttributes(&filterableAttrs)
 			require.NoError(t, err)
 			testWaitForIndexTask(t, i, task)
@@ -364,7 +364,7 @@ func TestIndex_SearchFacets(t *testing.T) {
 		client               meilisearch.ServiceManager
 		query                string
 		request              *meilisearch.SearchRequest
-		filterableAttributes []interface{}
+		filterableAttributes []any
 	}
 	tests := []struct {
 		name    string
@@ -392,7 +392,7 @@ func TestIndex_SearchFacets(t *testing.T) {
 				request: &meilisearch.SearchRequest{
 					Facets: []string{"*"},
 				},
-				filterableAttributes: []interface{}{"tag"},
+				filterableAttributes: []any{"tag"},
 			},
 			want: &meilisearch.SearchResponse{
 				Hits: meilisearch.Hits{
@@ -420,7 +420,7 @@ func TestIndex_SearchFacets(t *testing.T) {
 				request: &meilisearch.SearchRequest{
 					Facets: []string{"*"},
 				},
-				filterableAttributes: []interface{}{"tag"},
+				filterableAttributes: []any{"tag"},
 			},
 			want: &meilisearch.SearchResponse{
 				Hits: meilisearch.Hits{
@@ -448,7 +448,7 @@ func TestIndex_SearchFacets(t *testing.T) {
 				request: &meilisearch.SearchRequest{
 					Facets: []string{"book_id"},
 				},
-				filterableAttributes: []interface{}{"book_id"},
+				filterableAttributes: []any{"book_id"},
 			},
 			want: &meilisearch.SearchResponse{
 				Hits: meilisearch.Hits{
@@ -524,7 +524,7 @@ func TestIndex_SearchWithFilters(t *testing.T) {
 		PrimaryKey           string
 		client               meilisearch.ServiceManager
 		query                string
-		filterableAttributes []interface{}
+		filterableAttributes []any
 		request              *meilisearch.SearchRequest
 	}
 	tests := []struct {
@@ -539,7 +539,7 @@ func TestIndex_SearchWithFilters(t *testing.T) {
 				UID:                  "indexUID",
 				client:               sv,
 				query:                "and",
-				filterableAttributes: []interface{}{"tag"},
+				filterableAttributes: []any{"tag"},
 				request: &meilisearch.SearchRequest{
 					Filter: "tag = romance",
 				},
@@ -560,7 +560,7 @@ func TestIndex_SearchWithFilters(t *testing.T) {
 				UID:                  "indexUID",
 				client:               sv,
 				query:                "and",
-				filterableAttributes: []interface{}{"year"},
+				filterableAttributes: []any{"year"},
 				request: &meilisearch.SearchRequest{
 					Filter: "year = 2005",
 				},
@@ -725,7 +725,7 @@ func TestIndex_SearchOnNestedFields(t *testing.T) {
 				Hits: meilisearch.Hits{
 					{
 						"id": toRawMessage(5), "title": toRawMessage("The Hobbit"),
-						"info": toRawMessage(map[string]interface{}{
+						"info": toRawMessage(map[string]any{
 							"comment": "An awesome book", "reviewNb": 900,
 						}),
 					},
@@ -1190,7 +1190,7 @@ func TestIndex_FacetSearch(t *testing.T) {
 		PrimaryKey           string
 		client               meilisearch.ServiceManager
 		request              *meilisearch.FacetSearchRequest
-		filterableAttributes []interface{}
+		filterableAttributes []any
 	}
 
 	tests := []struct {
@@ -1208,7 +1208,7 @@ func TestIndex_FacetSearch(t *testing.T) {
 					FacetName:  "tag",
 					FacetQuery: "Novel",
 				},
-				filterableAttributes: []interface{}{"tag"},
+				filterableAttributes: []any{"tag"},
 			},
 			want: &meilisearch.FacetSearchResponse{
 				FacetHits: meilisearch.Hits{
@@ -1249,7 +1249,7 @@ func TestIndex_FacetSearch(t *testing.T) {
 					Q:         "query",
 					FacetName: "tag",
 				},
-				filterableAttributes: []interface{}{"tag"},
+				filterableAttributes: []any{"tag"},
 			},
 			want: &meilisearch.FacetSearchResponse{
 				FacetHits:  meilisearch.Hits{},
@@ -1267,7 +1267,7 @@ func TestIndex_FacetSearch(t *testing.T) {
 					FacetQuery: "Novel",
 					Filter:     []string{"tag = Novel"},
 				},
-				filterableAttributes: []interface{}{"tag"},
+				filterableAttributes: []any{"tag"},
 			},
 			want: &meilisearch.FacetSearchResponse{
 				FacetHits: meilisearch.Hits{

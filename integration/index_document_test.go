@@ -18,7 +18,7 @@ func Test_GetDocumentsByIDs(t *testing.T) {
 	})
 
 	require.NoError(t, err)
-	request := []map[string]interface{}{
+	request := []map[string]any{
 		{"ID": "1", "Name": "Pride and Prejudice 1"},
 		{"ID": "2", "Name": "Pride and Prejudice 2"},
 		{"ID": "3", "Name": "Pride and Prejudice 3"},
@@ -53,7 +53,7 @@ func Test_GetDocumentsWithQuery(t *testing.T) {
 	require.NoError(t, err)
 
 	// Add test documents with sortable fields
-	testDocuments := []map[string]interface{}{
+	testDocuments := []map[string]any{
 		{"id": "1", "title": "Alice in Wonderland", "rating": 4.5, "year": 1865},
 		{"id": "2", "title": "Pride and Prejudice", "rating": 4.8, "year": 1813},
 		{"id": "3", "title": "The Great Gatsby", "rating": 4.2, "year": 1925},
@@ -191,7 +191,7 @@ func Test_GetDocumentsWithQuery(t *testing.T) {
 				// Verify only specified IDs are returned
 				for _, doc := range documents.Results {
 					id := doc["id"]
-					require.Contains(t, []interface{}{toRawMessage("1"), toRawMessage("3")}, id, "Should only return documents with IDs 1 or 3")
+					require.Contains(t, []any{toRawMessage("1"), toRawMessage("3")}, id, "Should only return documents with IDs 1 or 3")
 				}
 
 			case "Get documents with combined parameters":
@@ -219,7 +219,7 @@ func Test_AddOrUpdateDocumentsWithContentEncoding(t *testing.T) {
 	tests := []struct {
 		Name            string
 		ContentEncoding meilisearch.ContentEncoding
-		Request         []map[string]interface{}
+		Request         []map[string]any
 		Response        struct {
 			WantResp *meilisearch.TaskInfo
 			DocResp  meilisearch.DocumentsResult
@@ -228,7 +228,7 @@ func Test_AddOrUpdateDocumentsWithContentEncoding(t *testing.T) {
 		{
 			Name:            "TestIndexBasicAddDocumentsWithGzip",
 			ContentEncoding: meilisearch.GzipEncoding,
-			Request: []map[string]interface{}{
+			Request: []map[string]any{
 				{"ID": "123", "Name": "Pride and Prejudice"},
 			},
 			Response: struct {
@@ -253,7 +253,7 @@ func Test_AddOrUpdateDocumentsWithContentEncoding(t *testing.T) {
 		{
 			Name:            "TestIndexBasicAddDocumentsWithDeflate",
 			ContentEncoding: meilisearch.DeflateEncoding,
-			Request: []map[string]interface{}{
+			Request: []map[string]any{
 				{"ID": "123", "Name": "Pride and Prejudice"},
 			},
 			Response: struct {
@@ -278,7 +278,7 @@ func Test_AddOrUpdateDocumentsWithContentEncoding(t *testing.T) {
 		{
 			Name:            "TestIndexBasicAddDocumentsWithBrotli",
 			ContentEncoding: meilisearch.BrotliEncoding,
-			Request: []map[string]interface{}{
+			Request: []map[string]any{
 				{"ID": "123", "Name": "Pride and Prejudice"},
 			},
 			Response: struct {
@@ -344,7 +344,7 @@ func TestIndex_AddOrUpdateDocuments(t *testing.T) {
 		UID          string
 		client       meilisearch.ServiceManager
 		options      *meilisearch.DocumentOptions
-		documentsPtr interface{}
+		documentsPtr any
 	}
 	type resp struct {
 		wantResp     *meilisearch.TaskInfo
@@ -360,7 +360,7 @@ func TestIndex_AddOrUpdateDocuments(t *testing.T) {
 			args: args{
 				UID:    "TestIndexBasicAddDocuments",
 				client: sv,
-				documentsPtr: []map[string]interface{}{
+				documentsPtr: []map[string]any{
 					{"ID": "123", "Name": "Pride and Prejudice"},
 				},
 			},
@@ -385,7 +385,7 @@ func TestIndex_AddOrUpdateDocuments(t *testing.T) {
 			args: args{
 				UID:    "TestIndexBasicAddDocumentsWithIntID",
 				client: sv,
-				documentsPtr: []map[string]interface{}{
+				documentsPtr: []map[string]any{
 					{"BookID": 123, "Title": "Pride and Prejudice"},
 				},
 			},
@@ -413,7 +413,7 @@ func TestIndex_AddOrUpdateDocuments(t *testing.T) {
 				options: &meilisearch.DocumentOptions{
 					SkipCreation: true,
 				},
-				documentsPtr: []map[string]interface{}{
+				documentsPtr: []map[string]any{
 					{"BookID": 123, "Title": "Go Crazy"},
 					{"BookID": 124, "Title": "Hacking APIs"},
 				},
@@ -472,7 +472,7 @@ func TestIndex_AddDocumentsWithPrimaryKey(t *testing.T) {
 	type args struct {
 		UID          string
 		client       meilisearch.ServiceManager
-		documentsPtr interface{}
+		documentsPtr any
 		primaryKey   string
 	}
 	type resp struct {
@@ -489,7 +489,7 @@ func TestIndex_AddDocumentsWithPrimaryKey(t *testing.T) {
 			args: args{
 				UID:    "TestIndexBasicAddDocumentsWithPrimaryKey",
 				client: sv,
-				documentsPtr: []map[string]interface{}{
+				documentsPtr: []map[string]any{
 					{"key": "123", "Name": "Pride and Prejudice"},
 				},
 				primaryKey: "key",
@@ -515,7 +515,7 @@ func TestIndex_AddDocumentsWithPrimaryKey(t *testing.T) {
 			args: args{
 				UID:    "TestIndexAddDocumentsWithPrimaryKeyWithIntID",
 				client: sv,
-				documentsPtr: []map[string]interface{}{
+				documentsPtr: []map[string]any{
 					{"key": 123, "Name": "Pride and Prejudice"},
 				},
 				primaryKey: "key",
@@ -568,14 +568,14 @@ func TestIndex_AddOrUpdateDocumentsInBatches(t *testing.T) {
 	type argsNoKey struct {
 		UID          string
 		client       meilisearch.ServiceManager
-		documentsPtr interface{}
+		documentsPtr any
 		batchSize    int
 	}
 
 	type argsWithKey struct {
 		UID          string
 		client       meilisearch.ServiceManager
-		documentsPtr interface{}
+		documentsPtr any
 		batchSize    int
 		primaryKey   string
 	}
@@ -658,7 +658,7 @@ func TestIndex_AddOrUpdateDocumentsInBatches(t *testing.T) {
 			gotResp, err := i.AddDocumentsInBatches(tt.args.documentsPtr, tt.args.batchSize, nil)
 
 			require.NoError(t, err)
-			for i := 0; i < 2; i++ {
+			for i := range 2 {
 				require.GreaterOrEqual(t, gotResp[i].TaskUID, tt.wantResp[i].TaskUID)
 				require.Equal(t, gotResp[i].Status, tt.wantResp[i].Status)
 				require.Equal(t, gotResp[i].Type, tt.wantResp[i].Type)
@@ -678,7 +678,7 @@ func TestIndex_AddOrUpdateDocumentsInBatches(t *testing.T) {
 
 			gotResp, err = i.UpdateDocumentsInBatches(tt.args.documentsPtr, tt.args.batchSize, nil)
 			require.NoError(t, err)
-			for i := 0; i < 2; i++ {
+			for i := range 2 {
 				require.GreaterOrEqual(t, gotResp[i].TaskUID, tt.wantResp[i].TaskUID)
 				require.Equal(t, gotResp[i].Status, tt.wantResp[i].Status)
 				require.Equal(t, gotResp[i].Type, tt.wantResp[i].Type)
@@ -699,7 +699,7 @@ func TestIndex_AddOrUpdateDocumentsInBatches(t *testing.T) {
 			gotResp, err := i.AddDocumentsInBatches(tt.args.documentsPtr, tt.args.batchSize, &meilisearch.DocumentOptions{PrimaryKey: &tt.args.primaryKey})
 
 			require.NoError(t, err)
-			for i := 0; i < 2; i++ {
+			for i := range 2 {
 				require.GreaterOrEqual(t, gotResp[i].TaskUID, tt.wantResp[i].TaskUID)
 				require.Equal(t, gotResp[i].Status, tt.wantResp[i].Status)
 				require.Equal(t, gotResp[i].Type, tt.wantResp[i].Type)
@@ -892,7 +892,7 @@ func TestIndex_AddOrUpdateDocumentsCsvInBatches(t *testing.T) {
 			}
 
 			require.NoError(t, err)
-			for i := 0; i < 2; i++ {
+			for i := range 2 {
 				require.GreaterOrEqual(t, gotResp[i].TaskUID, tt.wantResp[i].TaskUID)
 				require.Equal(t, gotResp[i].Status, tt.wantResp[i].Status)
 				require.Equal(t, gotResp[i].Type, tt.wantResp[i].Type)
@@ -909,7 +909,7 @@ func TestIndex_AddOrUpdateDocumentsCsvInBatches(t *testing.T) {
 			if !testReader {
 				gotResp, err = i.UpdateDocumentsCsvInBatches(tt.args.documents, tt.args.batchSize, nil)
 				require.NoError(t, err)
-				for i := 0; i < 2; i++ {
+				for i := range 2 {
 					require.GreaterOrEqual(t, gotResp[i].TaskUID, tt.wantResp[i].TaskUID)
 					require.Equal(t, gotResp[i].Status, tt.wantResp[i].Status)
 					require.Equal(t, gotResp[i].Type, tt.wantResp[i].Type)
@@ -1111,7 +1111,7 @@ func TestIndex_AddDocumentsCsvWithOptions(t *testing.T) {
 			i := c.Index(uid)
 			t.Cleanup(cleanup(c))
 
-			var wantDocs []map[string]interface{}
+			var wantDocs []map[string]any
 			if !tt.args.options.SkipCreation {
 				wantDocs = testParseCsvDocuments(t, bytes.NewReader(tt.args.documents))
 			}
@@ -1226,7 +1226,7 @@ func TestIndex_AddOrUpdateDocumentsNdjsonInBatches(t *testing.T) {
 			}
 
 			require.NoError(t, err)
-			for i := 0; i < 2; i++ {
+			for i := range 2 {
 				require.GreaterOrEqual(t, gotResp[i].TaskUID, tt.wantResp[i].TaskUID)
 				require.Equal(t, gotResp[i].Status, tt.wantResp[i].Status)
 				require.Equal(t, gotResp[i].Type, tt.wantResp[i].Type)
@@ -1243,7 +1243,7 @@ func TestIndex_AddOrUpdateDocumentsNdjsonInBatches(t *testing.T) {
 			if !testReader {
 				gotResp, err = i.UpdateDocumentsNdjsonInBatches(tt.args.documents, tt.args.batchSize, nil)
 				require.NoError(t, err)
-				for i := 0; i < 2; i++ {
+				for i := range 2 {
 					require.GreaterOrEqual(t, gotResp[i].TaskUID, tt.wantResp[i].TaskUID)
 					require.Equal(t, gotResp[i].Status, tt.wantResp[i].Status)
 					require.Equal(t, gotResp[i].Type, tt.wantResp[i].Type)
@@ -1336,7 +1336,7 @@ func TestIndex_DeleteOneDocument(t *testing.T) {
 		PrimaryKey   string
 		client       meilisearch.ServiceManager
 		identifier   string
-		documentsPtr interface{}
+		documentsPtr any
 	}
 	tests := []struct {
 		name     string
@@ -1349,7 +1349,7 @@ func TestIndex_DeleteOneDocument(t *testing.T) {
 				UID:        "1",
 				client:     sv,
 				identifier: "123",
-				documentsPtr: []map[string]interface{}{
+				documentsPtr: []map[string]any{
 					{"ID": "123", "Name": "Pride and Prejudice"},
 				},
 			},
@@ -1365,7 +1365,7 @@ func TestIndex_DeleteOneDocument(t *testing.T) {
 				UID:        "2",
 				client:     customSv,
 				identifier: "123",
-				documentsPtr: []map[string]interface{}{
+				documentsPtr: []map[string]any{
 					{"ID": "123", "Name": "Pride and Prejudice"},
 				},
 			},
@@ -1381,7 +1381,7 @@ func TestIndex_DeleteOneDocument(t *testing.T) {
 				UID:        "3",
 				client:     sv,
 				identifier: "456",
-				documentsPtr: []map[string]interface{}{
+				documentsPtr: []map[string]any{
 					{"ID": "123", "Name": "Pride and Prejudice"},
 					{"ID": "456", "Name": "Le Petit Prince"},
 					{"ID": "1", "Name": "Alice In Wonderland"},
@@ -1399,7 +1399,7 @@ func TestIndex_DeleteOneDocument(t *testing.T) {
 				UID:        "4",
 				client:     sv,
 				identifier: "123",
-				documentsPtr: []map[string]interface{}{
+				documentsPtr: []map[string]any{
 					{"BookID": 123, "Title": "Pride and Prejudice"},
 				},
 			},
@@ -1415,7 +1415,7 @@ func TestIndex_DeleteOneDocument(t *testing.T) {
 				UID:        "5",
 				client:     customSv,
 				identifier: "123",
-				documentsPtr: []map[string]interface{}{
+				documentsPtr: []map[string]any{
 					{"BookID": 123, "Title": "Pride and Prejudice"},
 				},
 			},
@@ -1431,7 +1431,7 @@ func TestIndex_DeleteOneDocument(t *testing.T) {
 				UID:        "6",
 				client:     sv,
 				identifier: "456",
-				documentsPtr: []map[string]interface{}{
+				documentsPtr: []map[string]any{
 					{"BookID": 123, "Title": "Pride and Prejudice"},
 					{"BookID": 456, "Title": "Le Petit Prince"},
 					{"BookID": 1, "Title": "Alice In Wonderland"},
@@ -1465,7 +1465,7 @@ func TestIndex_DeleteOneDocument(t *testing.T) {
 
 			testWaitForIndexTask(t, i, gotResp)
 
-			var document []map[string]interface{}
+			var document []map[string]any
 			err = i.GetDocument(tt.args.identifier, nil, &document)
 			require.Error(t, err)
 			require.Empty(t, document)
@@ -1598,8 +1598,8 @@ func TestIndex_DeleteDocumentsByFilter(t *testing.T) {
 	type args struct {
 		UID            string
 		client         meilisearch.ServiceManager
-		filterToDelete interface{}
-		filterToApply  []interface{}
+		filterToDelete any
+		filterToApply  []any
 		documentsPtr   []docTestBooks
 	}
 	tests := []struct {
@@ -1612,7 +1612,7 @@ func TestIndex_DeleteDocumentsByFilter(t *testing.T) {
 			args: args{
 				UID:            "1",
 				client:         sv,
-				filterToApply:  []interface{}{"book_id"},
+				filterToApply:  []any{"book_id"},
 				filterToDelete: "book_id = 123",
 				documentsPtr: []docTestBooks{
 					{BookID: 123, Title: "Pride and Prejudice", Tag: "Romance", Year: 1813},
@@ -1629,7 +1629,7 @@ func TestIndex_DeleteDocumentsByFilter(t *testing.T) {
 			args: args{
 				UID:            "1",
 				client:         customSv,
-				filterToApply:  []interface{}{"tag"},
+				filterToApply:  []any{"tag"},
 				filterToDelete: []string{"tag = 'Epic fantasy'"},
 				documentsPtr: []docTestBooks{
 					{BookID: 1344, Title: "The Hobbit", Tag: "Epic fantasy", Year: 1937},
@@ -1648,7 +1648,7 @@ func TestIndex_DeleteDocumentsByFilter(t *testing.T) {
 			args: args{
 				UID:            "1",
 				client:         customSv,
-				filterToApply:  []interface{}{"tag", "year"},
+				filterToApply:  []any{"tag", "year"},
 				filterToDelete: []string{"tag = 'Epic fantasy'", "year > 1936"},
 				documentsPtr: []docTestBooks{
 					{BookID: 1344, Title: "The Hobbit", Tag: "Epic fantasy", Year: 1937},
@@ -1667,8 +1667,8 @@ func TestIndex_DeleteDocumentsByFilter(t *testing.T) {
 			args: args{
 				UID:            "1",
 				client:         customSv,
-				filterToApply:  []interface{}{"book_id", "tag"},
-				filterToDelete: []interface{}{[]string{"tag = 'Epic fantasy'", "book_id = 123"}},
+				filterToApply:  []any{"book_id", "tag"},
+				filterToDelete: []any{[]string{"tag = 'Epic fantasy'", "book_id = 123"}},
 				documentsPtr: []docTestBooks{
 					{BookID: 123, Title: "Pride and Prejudice", Tag: "Romance", Year: 1813},
 					{BookID: 1344, Title: "The Hobbit", Tag: "Epic fantasy", Year: 1937},
@@ -1687,7 +1687,7 @@ func TestIndex_DeleteDocumentsByFilter(t *testing.T) {
 			args: args{
 				UID:    "1",
 				client: customSv,
-				filterToApply: []interface{}{
+				filterToApply: []any{
 					meilisearch.AttributeRule{
 						AttributePatterns: []string{"tag"},
 						Features: meilisearch.AttributeFeatures{
@@ -1726,7 +1726,7 @@ func TestIndex_DeleteDocumentsByFilter(t *testing.T) {
 			args: args{
 				UID:    "1",
 				client: customSv,
-				filterToApply: []interface{}{
+				filterToApply: []any{
 					"title",
 					meilisearch.AttributeRule{
 						AttributePatterns: []string{"year"},
@@ -1808,7 +1808,7 @@ func TestIndex_UpdateDocumentsByFunction(t *testing.T) {
 
 	t.Run("Test User-defined Context", func(t *testing.T) {
 		task, err := idx.UpdateDocumentsByFunction(&meilisearch.UpdateDocumentByFunctionRequest{
-			Context: map[string]interface{}{
+			Context: map[string]any{
 				"idmax": 50,
 			},
 			Function: "if doc.id >= context.idmax {\n\t\t    doc = ()\n\t\t  } else {\n\t\t\t  doc.title = `✨ ${doc.title} ✨`\n\t\t\t}",
@@ -1827,14 +1827,14 @@ func TestIndex_DocumentOperationsWithCustomMetadata(t *testing.T) {
 	require.NoError(t, err)
 	i := sv.Index(indexUID)
 
-	filterableAttributes := []interface{}{"id"}
+	filterableAttributes := []any{"id"}
 
 	task, err := i.UpdateFilterableAttributes(&filterableAttributes)
 	require.NoError(t, err)
 	testWaitForIndexTask(t, i, task)
 
 	// Define common test data
-	documents := []map[string]interface{}{
+	documents := []map[string]any{
 		{"id": "1", "title": "Document 1"},
 		{"id": "2", "title": "Document 2"},
 	}
@@ -1860,7 +1860,7 @@ func TestIndex_DocumentOperationsWithCustomMetadata(t *testing.T) {
 			name: "UpdateDocuments with Metadata",
 			action: func(t *testing.T) *meilisearch.TaskInfo {
 				meta := "meta-update-docs"
-				updateDocs := []map[string]interface{}{
+				updateDocs := []map[string]any{
 					{"id": "1", "title": "Updated Document 1"},
 				}
 				task, err := i.UpdateDocuments(updateDocs, &meilisearch.DocumentOptions{
@@ -1943,7 +1943,7 @@ func TestIndex_DocumentOperationsWithCustomMetadata(t *testing.T) {
 	// Special Case: UpdateDocumentsByFunction
 	t.Run("UpdateDocumentsByFunction with Metadata", func(t *testing.T) {
 		// Ensure we have a doc to update
-		setupTask, _ := i.AddDocuments([]map[string]interface{}{{"id": "99", "title": "Function Doc"}}, nil)
+		setupTask, _ := i.AddDocuments([]map[string]any{{"id": "99", "title": "Function Doc"}}, nil)
 		testWaitForIndexTask(t, i, setupTask)
 
 		meta := "meta-function-update"
@@ -1973,7 +1973,7 @@ func TestIndex_DocumentOperationsWithCustomMetadata(t *testing.T) {
 	// Special Case: DeleteDocumentsByFilter
 	t.Run("DeleteDocumentsByFilter with Metadata", func(t *testing.T) {
 		// Ensure we have a doc to delete
-		setupTask, _ := i.AddDocuments([]map[string]interface{}{{"id": "99", "title": "Filter Doc"}}, nil)
+		setupTask, _ := i.AddDocuments([]map[string]any{{"id": "99", "title": "Filter Doc"}}, nil)
 		testWaitForIndexTask(t, i, setupTask)
 
 		meta := "meta-delete-filter"

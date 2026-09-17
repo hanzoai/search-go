@@ -10,7 +10,7 @@ import (
 
 func TestPooledBuffer_Read(t *testing.T) {
 	pool := &sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return new(bytes.Buffer)
 		},
 	}
@@ -33,7 +33,7 @@ func TestPooledBuffer_Read(t *testing.T) {
 
 func TestPooledBuffer_Close(t *testing.T) {
 	pool := &sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return new(bytes.Buffer)
 		},
 	}

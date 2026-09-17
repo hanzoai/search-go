@@ -86,22 +86,22 @@ type DocumentManager interface {
 	// AddDocuments adds multiple documents to the index.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/documents/add-or-replace-documents
-	AddDocuments(documentsPtr interface{}, opts *DocumentOptions) (*TaskInfo, error)
+	AddDocuments(documentsPtr any, opts *DocumentOptions) (*TaskInfo, error)
 
 	// AddDocumentsWithContext adds multiple documents to the index using the provided context for cancellation.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/documents/add-or-replace-documents
-	AddDocumentsWithContext(ctx context.Context, documentsPtr interface{}, opts *DocumentOptions) (*TaskInfo, error)
+	AddDocumentsWithContext(ctx context.Context, documentsPtr any, opts *DocumentOptions) (*TaskInfo, error)
 
 	// AddDocumentsInBatches adds documents to the index in batches of specified size.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/documents/add-or-replace-documents
-	AddDocumentsInBatches(documentsPtr interface{}, batchSize int, opts *DocumentOptions) ([]TaskInfo, error)
+	AddDocumentsInBatches(documentsPtr any, batchSize int, opts *DocumentOptions) ([]TaskInfo, error)
 
 	// AddDocumentsInBatchesWithContext adds documents to the index in batches of specified size using the provided context for cancellation.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/documents/add-or-replace-documents
-	AddDocumentsInBatchesWithContext(ctx context.Context, documentsPtr interface{}, batchSize int, opts *DocumentOptions) ([]TaskInfo, error)
+	AddDocumentsInBatchesWithContext(ctx context.Context, documentsPtr any, batchSize int, opts *DocumentOptions) ([]TaskInfo, error)
 
 	// AddDocumentsCsv adds documents from a CSV byte array to the index.
 	//
@@ -186,22 +186,22 @@ type DocumentManager interface {
 	// UpdateDocuments updates multiple documents in the index.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/documents/add-or-replace-documents
-	UpdateDocuments(documentsPtr interface{}, opts *DocumentOptions) (*TaskInfo, error)
+	UpdateDocuments(documentsPtr any, opts *DocumentOptions) (*TaskInfo, error)
 
 	// UpdateDocumentsWithContext updates multiple documents in the index using the provided context for cancellation.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/documents/add-or-replace-documents
-	UpdateDocumentsWithContext(ctx context.Context, documentsPtr interface{}, opts *DocumentOptions) (*TaskInfo, error)
+	UpdateDocumentsWithContext(ctx context.Context, documentsPtr any, opts *DocumentOptions) (*TaskInfo, error)
 
 	// UpdateDocumentsInBatches updates documents in the index in batches of specified size.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/documents/add-or-replace-documents
-	UpdateDocumentsInBatches(documentsPtr interface{}, batchSize int, opts *DocumentOptions) ([]TaskInfo, error)
+	UpdateDocumentsInBatches(documentsPtr any, batchSize int, opts *DocumentOptions) ([]TaskInfo, error)
 
 	// UpdateDocumentsInBatchesWithContext updates documents in the index in batches of specified size using the provided context for cancellation.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/documents/add-or-replace-documents
-	UpdateDocumentsInBatchesWithContext(ctx context.Context, documentsPtr interface{}, batchSize int, opts *DocumentOptions) ([]TaskInfo, error)
+	UpdateDocumentsInBatchesWithContext(ctx context.Context, documentsPtr any, batchSize int, opts *DocumentOptions) ([]TaskInfo, error)
 
 	// UpdateDocumentsCsv updates documents in the index from a CSV byte array.
 	//
@@ -276,12 +276,12 @@ type DocumentManager interface {
 	// DeleteDocumentsByFilter deletes documents from the index by filter.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/documents/delete-documents-by-filter
-	DeleteDocumentsByFilter(filter interface{}, opts *DocumentOptions) (*TaskInfo, error)
+	DeleteDocumentsByFilter(filter any, opts *DocumentOptions) (*TaskInfo, error)
 
 	// DeleteDocumentsByFilterWithContext deletes documents from the index by filter using the provided context for cancellation.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/documents/delete-documents-by-filter
-	DeleteDocumentsByFilterWithContext(ctx context.Context, filter interface{}, opts *DocumentOptions) (*TaskInfo, error)
+	DeleteDocumentsByFilterWithContext(ctx context.Context, filter any, opts *DocumentOptions) (*TaskInfo, error)
 
 	// DeleteAllDocuments deletes all documents from the index.
 	//
@@ -298,12 +298,12 @@ type DocumentReader interface {
 	// GetDocument retrieves a single document from the index by identifier.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/documents/get-document
-	GetDocument(identifier string, request *DocumentQuery, documentPtr interface{}) error
+	GetDocument(identifier string, request *DocumentQuery, documentPtr any) error
 
 	// GetDocumentWithContext retrieves a single document from the index by identifier using the provided context for cancellation.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/documents/get-document
-	GetDocumentWithContext(ctx context.Context, identifier string, request *DocumentQuery, documentPtr interface{}) error
+	GetDocumentWithContext(ctx context.Context, identifier string, request *DocumentQuery, documentPtr any) error
 
 	// GetDocuments retrieves multiple documents from the index.
 	//
@@ -504,12 +504,12 @@ type SettingsManager interface {
 	// UpdateFilterableAttributes updates the filterable attributes of the index.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/settings/update-filterableattributes
-	UpdateFilterableAttributes(request *[]interface{}) (*TaskInfo, error)
+	UpdateFilterableAttributes(request *[]any) (*TaskInfo, error)
 
 	// UpdateFilterableAttributesWithContext updates the filterable attributes of the index using the provided context for cancellation.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/settings/update-filterableattributes
-	UpdateFilterableAttributesWithContext(ctx context.Context, request *[]interface{}) (*TaskInfo, error)
+	UpdateFilterableAttributesWithContext(ctx context.Context, request *[]any) (*TaskInfo, error)
 
 	// ResetFilterableAttributes resets the filterable attributes of the index to default values.
 	//
@@ -856,12 +856,12 @@ type SettingsReader interface {
 	// GetFilterableAttributes retrieves the filterable attributes of the index.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/settings/get-filterableattributes
-	GetFilterableAttributes() (*[]interface{}, error)
+	GetFilterableAttributes() (*[]any, error)
 
 	// GetFilterableAttributesWithContext retrieves the filterable attributes of the index using the provided context for cancellation.
 	//
 	// docs: https://www.meilisearch.com/docs/reference/api/settings/get-filterableattributes
-	GetFilterableAttributesWithContext(ctx context.Context) (*[]interface{}, error)
+	GetFilterableAttributesWithContext(ctx context.Context) (*[]any, error)
 
 	// GetSortableAttributes retrieves the sortable attributes of the index.
 	//

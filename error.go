@@ -110,7 +110,7 @@ type Error struct {
 
 // Error return a well human formatted message.
 func (e *Error) Error() string {
-	message := namedSprintf(e.rawMessage, map[string]interface{}{
+	message := namedSprintf(e.rawMessage, map[string]any{
 		"endpoint":           e.Endpoint,
 		"method":             e.Method,
 		"function":           e.Function,
@@ -172,7 +172,7 @@ func VersionErrorHintMessage(err error, req *internalRequest) error {
 		"Meilisearch version that %s call requires", err, req.functionName)
 }
 
-func namedSprintf(format string, params map[string]interface{}) string {
+func namedSprintf(format string, params map[string]any) string {
 	for key, val := range params {
 		format = strings.ReplaceAll(format, "${"+key+"}", fmt.Sprintf("%v", val))
 	}

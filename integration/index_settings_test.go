@@ -263,7 +263,7 @@ func TestIndex_GetSettings(t *testing.T) {
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
 				LocalizedAttributes:  nil,
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -293,7 +293,7 @@ func TestIndex_GetSettings(t *testing.T) {
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
 				LocalizedAttributes:  nil,
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -907,7 +907,7 @@ func TestIndex_ResetSettings(t *testing.T) {
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
 				LocalizedAttributes:  nil,
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -939,7 +939,7 @@ func TestIndex_ResetSettings(t *testing.T) {
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
 				LocalizedAttributes:  nil,
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -1313,7 +1313,7 @@ func TestIndex_UpdateFilterableAttributes(t *testing.T) {
 	type args struct {
 		UID     string
 		client  meilisearch.ServiceManager
-		request []interface{}
+		request []any
 	}
 	tests := []struct {
 		name     string
@@ -1325,7 +1325,7 @@ func TestIndex_UpdateFilterableAttributes(t *testing.T) {
 			args: args{
 				UID:    "indexUID",
 				client: meili,
-				request: []interface{}{
+				request: []any{
 					"title",
 				},
 			},
@@ -1338,7 +1338,7 @@ func TestIndex_UpdateFilterableAttributes(t *testing.T) {
 			args: args{
 				UID:    "indexUID",
 				client: customMeili,
-				request: []interface{}{
+				request: []any{
 					"title",
 				},
 			},
@@ -1351,13 +1351,13 @@ func TestIndex_UpdateFilterableAttributes(t *testing.T) {
 			args: args{
 				UID:    "indexUID",
 				client: meili,
-				request: []interface{}{
+				request: []any{
 					"tag",
-					map[string]interface{}{
-						"attributePatterns": []interface{}{"year"},
-						"features": map[string]interface{}{
+					map[string]any{
+						"attributePatterns": []any{"year"},
+						"features": map[string]any{
 							"facetSearch": false,
-							"filter": map[string]interface{}{
+							"filter": map[string]any{
 								"equality":   true,
 								"comparison": true,
 							},
@@ -1374,12 +1374,12 @@ func TestIndex_UpdateFilterableAttributes(t *testing.T) {
 			args: args{
 				UID:    "indexUID",
 				client: meili,
-				request: []interface{}{
-					map[string]interface{}{
-						"attributePatterns": []interface{}{"year"},
-						"features": map[string]interface{}{
+				request: []any{
+					map[string]any{
+						"attributePatterns": []any{"year"},
+						"features": map[string]any{
 							"facetSearch": false,
-							"filter": map[string]interface{}{
+							"filter": map[string]any{
 								"equality":   true,
 								"comparison": true,
 							},
@@ -1773,7 +1773,7 @@ func TestIndex_UpdateSettings(t *testing.T) {
 							AttributePatterns: []string{"*_ja"},
 						},
 					},
-					PrefixSearch: stringPtr("indexingTime"),
+					PrefixSearch: new("indexingTime"),
 					FacetSearch:  true,
 					Embedders:    make(map[string]meilisearch.Embedder),
 					Chat:         &defaultChat,
@@ -1805,7 +1805,7 @@ func TestIndex_UpdateSettings(t *testing.T) {
 						AttributePatterns: []string{"*_ja"},
 					},
 				},
-				PrefixSearch: stringPtr("indexingTime"),
+				PrefixSearch: new("indexingTime"),
 				FacetSearch:  true,
 				Embedders:    make(map[string]meilisearch.Embedder),
 				Chat:         &defaultChat,
@@ -1863,7 +1863,7 @@ func TestIndex_UpdateSettings(t *testing.T) {
 					SeparatorTokens:    make([]string, 0),
 					NonSeparatorTokens: make([]string, 0),
 					Dictionary:         make([]string, 0),
-					PrefixSearch:       stringPtr("indexingTime"),
+					PrefixSearch:       new("indexingTime"),
 					FacetSearch:        true,
 					Embedders:          make(map[string]meilisearch.Embedder),
 					Chat:               &defaultChat,
@@ -1889,7 +1889,7 @@ func TestIndex_UpdateSettings(t *testing.T) {
 				SeparatorTokens:      make([]string, 0),
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -1968,7 +1968,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:      make([]string, 0),
 					NonSeparatorTokens:   make([]string, 0),
 					Dictionary:           make([]string, 0),
-					PrefixSearch:         stringPtr("indexingTime"),
+					PrefixSearch:         new("indexingTime"),
 					FacetSearch:          true,
 					Embedders:            make(map[string]meilisearch.Embedder),
 					Chat:                 &defaultChat,
@@ -1998,7 +1998,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:      make([]string, 0),
 					NonSeparatorTokens:   make([]string, 0),
 					Dictionary:           make([]string, 0),
-					PrefixSearch:         stringPtr("indexingTime"),
+					PrefixSearch:         new("indexingTime"),
 					FacetSearch:          true,
 					Embedders:            make(map[string]meilisearch.Embedder),
 					Chat:                 &defaultChat,
@@ -2023,7 +2023,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 				SeparatorTokens:      make([]string, 0),
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -2062,7 +2062,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:      make([]string, 0),
 					NonSeparatorTokens:   make([]string, 0),
 					Dictionary:           make([]string, 0),
-					PrefixSearch:         stringPtr("indexingTime"),
+					PrefixSearch:         new("indexingTime"),
 					FacetSearch:          true,
 					Embedders:            make(map[string]meilisearch.Embedder),
 					Chat:                 &defaultChat,
@@ -2092,7 +2092,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:      make([]string, 0),
 					NonSeparatorTokens:   make([]string, 0),
 					Dictionary:           make([]string, 0),
-					PrefixSearch:         stringPtr("indexingTime"),
+					PrefixSearch:         new("indexingTime"),
 					FacetSearch:          true,
 					Embedders:            make(map[string]meilisearch.Embedder),
 					Chat:                 &defaultChat,
@@ -2117,7 +2117,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 				SeparatorTokens:      make([]string, 0),
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -2156,7 +2156,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:      make([]string, 0),
 					NonSeparatorTokens:   make([]string, 0),
 					Dictionary:           make([]string, 0),
-					PrefixSearch:         stringPtr("indexingTime"),
+					PrefixSearch:         new("indexingTime"),
 					FacetSearch:          true,
 					Embedders:            make(map[string]meilisearch.Embedder),
 					Chat:                 &defaultChat,
@@ -2186,7 +2186,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:      make([]string, 0),
 					NonSeparatorTokens:   make([]string, 0),
 					Dictionary:           make([]string, 0),
-					PrefixSearch:         stringPtr("indexingTime"),
+					PrefixSearch:         new("indexingTime"),
 					FacetSearch:          true,
 					Embedders:            make(map[string]meilisearch.Embedder),
 					Chat:                 &defaultChat,
@@ -2211,7 +2211,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 				SeparatorTokens:      make([]string, 0),
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -2250,7 +2250,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:      make([]string, 0),
 					NonSeparatorTokens:   make([]string, 0),
 					Dictionary:           make([]string, 0),
-					PrefixSearch:         stringPtr("indexingTime"),
+					PrefixSearch:         new("indexingTime"),
 					FacetSearch:          true,
 					Embedders:            make(map[string]meilisearch.Embedder),
 					Chat:                 &defaultChat,
@@ -2280,7 +2280,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:      make([]string, 0),
 					NonSeparatorTokens:   make([]string, 0),
 					Dictionary:           make([]string, 0),
-					PrefixSearch:         stringPtr("indexingTime"),
+					PrefixSearch:         new("indexingTime"),
 					FacetSearch:          true,
 					Embedders:            make(map[string]meilisearch.Embedder),
 					Chat:                 &defaultChat,
@@ -2305,7 +2305,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 				SeparatorTokens:      make([]string, 0),
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -2344,7 +2344,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:      make([]string, 0),
 					NonSeparatorTokens:   make([]string, 0),
 					Dictionary:           make([]string, 0),
-					PrefixSearch:         stringPtr("indexingTime"),
+					PrefixSearch:         new("indexingTime"),
 					FacetSearch:          true,
 					Embedders:            make(map[string]meilisearch.Embedder),
 					Chat:                 &defaultChat,
@@ -2374,7 +2374,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:      make([]string, 0),
 					NonSeparatorTokens:   make([]string, 0),
 					Dictionary:           make([]string, 0),
-					PrefixSearch:         stringPtr("indexingTime"),
+					PrefixSearch:         new("indexingTime"),
 					FacetSearch:          true,
 					Embedders:            make(map[string]meilisearch.Embedder),
 					Chat:                 &defaultChat,
@@ -2399,7 +2399,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 				SeparatorTokens:      make([]string, 0),
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -2438,7 +2438,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:    make([]string, 0),
 					NonSeparatorTokens: make([]string, 0),
 					Dictionary:         make([]string, 0),
-					PrefixSearch:       stringPtr("indexingTime"),
+					PrefixSearch:       new("indexingTime"),
 					FacetSearch:        true,
 					Embedders:          make(map[string]meilisearch.Embedder),
 					Chat:               &defaultChat,
@@ -2468,7 +2468,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:    make([]string, 0),
 					NonSeparatorTokens: make([]string, 0),
 					Dictionary:         make([]string, 0),
-					PrefixSearch:       stringPtr("indexingTime"),
+					PrefixSearch:       new("indexingTime"),
 					FacetSearch:        true,
 					Embedders:          make(map[string]meilisearch.Embedder),
 					Chat:               &defaultChat,
@@ -2493,7 +2493,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 				SeparatorTokens:      make([]string, 0),
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -2532,7 +2532,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:    make([]string, 0),
 					NonSeparatorTokens: make([]string, 0),
 					Dictionary:         make([]string, 0),
-					PrefixSearch:       stringPtr("indexingTime"),
+					PrefixSearch:       new("indexingTime"),
 					FacetSearch:        true,
 					Embedders:          make(map[string]meilisearch.Embedder),
 					Chat:               &defaultChat,
@@ -2562,7 +2562,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:    make([]string, 0),
 					NonSeparatorTokens: make([]string, 0),
 					Dictionary:         make([]string, 0),
-					PrefixSearch:       stringPtr("indexingTime"),
+					PrefixSearch:       new("indexingTime"),
 					FacetSearch:        true,
 					Embedders:          make(map[string]meilisearch.Embedder),
 					Chat:               &defaultChat,
@@ -2587,7 +2587,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 				SeparatorTokens:      make([]string, 0),
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -2640,7 +2640,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:      make([]string, 0),
 					NonSeparatorTokens:   make([]string, 0),
 					Dictionary:           make([]string, 0),
-					PrefixSearch:         stringPtr("indexingTime"),
+					PrefixSearch:         new("indexingTime"),
 					FacetSearch:          true,
 					Embedders:            make(map[string]meilisearch.Embedder),
 					Chat:                 &defaultChat,
@@ -2692,7 +2692,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:    make([]string, 0),
 					NonSeparatorTokens: make([]string, 0),
 					Dictionary:         make([]string, 0),
-					PrefixSearch:       stringPtr("indexingTime"),
+					PrefixSearch:       new("indexingTime"),
 					FacetSearch:        true,
 					Embedders:          make(map[string]meilisearch.Embedder),
 					Chat:               &defaultChat,
@@ -2717,7 +2717,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 				SeparatorTokens:      make([]string, 0),
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -2756,7 +2756,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:    make([]string, 0),
 					NonSeparatorTokens: make([]string, 0),
 					Dictionary:         make([]string, 0),
-					PrefixSearch:       stringPtr("indexingTime"),
+					PrefixSearch:       new("indexingTime"),
 					FacetSearch:        true,
 					Embedders:          make(map[string]meilisearch.Embedder),
 					Chat:               &defaultChat,
@@ -2786,7 +2786,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:    make([]string, 0),
 					NonSeparatorTokens: make([]string, 0),
 					Dictionary:         make([]string, 0),
-					PrefixSearch:       stringPtr("indexingTime"),
+					PrefixSearch:       new("indexingTime"),
 					FacetSearch:        true,
 					Embedders:          make(map[string]meilisearch.Embedder),
 					Chat:               &defaultChat,
@@ -2811,7 +2811,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 				SeparatorTokens:      make([]string, 0),
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -2853,7 +2853,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:    make([]string, 0),
 					NonSeparatorTokens: make([]string, 0),
 					Dictionary:         make([]string, 0),
-					PrefixSearch:       stringPtr("indexingTime"),
+					PrefixSearch:       new("indexingTime"),
 					FacetSearch:        true,
 					Embedders:          make(map[string]meilisearch.Embedder),
 					Chat:               &defaultChat,
@@ -2886,7 +2886,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:    make([]string, 0),
 					NonSeparatorTokens: make([]string, 0),
 					Dictionary:         make([]string, 0),
-					PrefixSearch:       stringPtr("indexingTime"),
+					PrefixSearch:       new("indexingTime"),
 					FacetSearch:        true,
 					Embedders:          make(map[string]meilisearch.Embedder),
 					Chat:               &defaultChat,
@@ -2911,7 +2911,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 				SeparatorTokens:      make([]string, 0),
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -2951,7 +2951,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:    make([]string, 0),
 					NonSeparatorTokens: make([]string, 0),
 					Dictionary:         make([]string, 0),
-					PrefixSearch:       stringPtr("indexingTime"),
+					PrefixSearch:       new("indexingTime"),
 					FacetSearch:        true,
 					Embedders:          make(map[string]meilisearch.Embedder),
 					Chat:               &defaultChat,
@@ -2985,7 +2985,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:    make([]string, 0),
 					NonSeparatorTokens: make([]string, 0),
 					Dictionary:         make([]string, 0),
-					PrefixSearch:       stringPtr("indexingTime"),
+					PrefixSearch:       new("indexingTime"),
 					FacetSearch:        true,
 					Embedders:          make(map[string]meilisearch.Embedder),
 					Chat:               &defaultChat,
@@ -3010,7 +3010,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 				SeparatorTokens:      make([]string, 0),
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -3044,7 +3044,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:      make([]string, 0),
 					NonSeparatorTokens:   make([]string, 0),
 					Dictionary:           make([]string, 0),
-					PrefixSearch:         stringPtr("indexingTime"),
+					PrefixSearch:         new("indexingTime"),
 					FacetSearch:          true,
 					Embedders:            make(map[string]meilisearch.Embedder),
 					Chat: &meilisearch.Chat{
@@ -3080,7 +3080,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 					SeparatorTokens:      make([]string, 0),
 					NonSeparatorTokens:   make([]string, 0),
 					Dictionary:           make([]string, 0),
-					PrefixSearch:         stringPtr("indexingTime"),
+					PrefixSearch:         new("indexingTime"),
 					FacetSearch:          true,
 					Embedders:            make(map[string]meilisearch.Embedder),
 					Chat: &meilisearch.Chat{
@@ -3112,7 +3112,7 @@ func TestIndex_UpdateSettingsOneByOne(t *testing.T) {
 				SeparatorTokens:      make([]string, 0),
 				NonSeparatorTokens:   make([]string, 0),
 				Dictionary:           make([]string, 0),
-				PrefixSearch:         stringPtr("indexingTime"),
+				PrefixSearch:         new("indexingTime"),
 				FacetSearch:          true,
 				Embedders:            make(map[string]meilisearch.Embedder),
 				Chat:                 &defaultChat,
@@ -3895,13 +3895,13 @@ func TestIndex_UpdateSettingsEmbedders(t *testing.T) {
 								Mean:  0.7,
 								Sigma: 0.3,
 							},
-							Request: map[string]interface{}{
+							Request: map[string]any{
 								"model": "text-embedding-3-small",
 								"input": []string{"{{text}}", "{{..}}"},
 							},
-							Response: map[string]interface{}{
-								"data": []interface{}{
-									map[string]interface{}{
+							Response: map[string]any{
+								"data": []any{
+									map[string]any{
 										"embedding": "{{embedding}}",
 									},
 									"{{..}}",
@@ -4433,7 +4433,7 @@ func TestIndex_GetPrefixSearch(t *testing.T) {
 				UID:    "indexUID",
 				client: meili,
 			},
-			wantResp: stringPtr("indexingTime"),
+			wantResp: new("indexingTime"),
 		},
 		{
 			name: "TestIndexGetPrefixSearchWithCustomClient",
@@ -4441,7 +4441,7 @@ func TestIndex_GetPrefixSearch(t *testing.T) {
 				UID:    "indexUID",
 				client: customMeili,
 			},
-			wantResp: stringPtr("indexingTime"),
+			wantResp: new("indexingTime"),
 		},
 	}
 	for _, tt := range tests {
@@ -4483,7 +4483,7 @@ func TestIndex_UpdatePrefixSearch(t *testing.T) {
 				request: "disabled",
 			},
 			wantTask: &meilisearch.TaskInfo{TaskUID: 1},
-			wantResp: stringPtr("disabled"),
+			wantResp: new("disabled"),
 		},
 		{
 			name: "TestIndexUpdatePrefixSearchWithCustomClient",
@@ -4493,7 +4493,7 @@ func TestIndex_UpdatePrefixSearch(t *testing.T) {
 				request: "disabled",
 			},
 			wantTask: &meilisearch.TaskInfo{TaskUID: 1},
-			wantResp: stringPtr("disabled"),
+			wantResp: new("disabled"),
 		},
 	}
 	for _, tt := range tests {
@@ -4538,7 +4538,7 @@ func TestIndex_ResetPrefixSearch(t *testing.T) {
 				client: meili,
 			},
 			wantTask: &meilisearch.TaskInfo{TaskUID: 1},
-			wantResp: stringPtr("indexingTime"),
+			wantResp: new("indexingTime"),
 		},
 		{
 			name: "TestIndexResetPrefixSearchWithCustomClient",
@@ -4547,7 +4547,7 @@ func TestIndex_ResetPrefixSearch(t *testing.T) {
 				client: customMeili,
 			},
 			wantTask: &meilisearch.TaskInfo{TaskUID: 1},
-			wantResp: stringPtr("indexingTime"),
+			wantResp: new("indexingTime"),
 		},
 	}
 	for _, tt := range tests {
@@ -4732,13 +4732,4 @@ func TestIndex_ResetFacetSearch(t *testing.T) {
 			require.Equal(t, tt.wantResp, gotResp)
 		})
 	}
-}
-
-// Helper functions
-func stringPtr(s string) *string {
-	return &s
-}
-
-func boolPtr(b bool) *bool {
-	return &b
 }

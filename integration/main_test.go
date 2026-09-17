@@ -311,7 +311,7 @@ func setUpEmptyIndex(sv meilisearch.ServiceManager,
 func setUpBasicIndex(sv meilisearch.ServiceManager, indexUID string) {
 	index := sv.Index(indexUID)
 
-	documents := []map[string]interface{}{
+	documents := []map[string]any{
 		{"book_id": 123, "title": "Pride and Prejudice"},
 		{"book_id": 456, "title": "Le Petit Prince"},
 		{"book_id": 1, "title": "Alice In Wonderland"},
@@ -342,7 +342,7 @@ func setupMovieIndex(t *testing.T, client meilisearch.ServiceManager, uid string
 		_ = testdata.Close()
 	}()
 
-	tests := make([]map[string]interface{}, 0)
+	tests := make([]map[string]any, 0)
 
 	require.NoError(t, json.NewDecoder(testdata).Decode(&tests))
 
@@ -350,7 +350,7 @@ func setupMovieIndex(t *testing.T, client meilisearch.ServiceManager, uid string
 	require.NoError(t, err)
 	testWaitForIndexTask(t, idx, task)
 
-	task, err = idx.UpdateFilterableAttributes(&[]interface{}{"id", "title", "overview"})
+	task, err = idx.UpdateFilterableAttributes(&[]any{"id", "title", "overview"})
 	require.NoError(t, err)
 	testWaitForIndexTask(t, idx, task)
 
@@ -368,7 +368,7 @@ func setupComicIndex(t *testing.T, client meilisearch.ServiceManager, uid string
 		_ = testdata.Close()
 	}()
 
-	tests := make([]map[string]interface{}, 0)
+	tests := make([]map[string]any, 0)
 
 	require.NoError(t, json.NewDecoder(testdata).Decode(&tests))
 
@@ -376,7 +376,7 @@ func setupComicIndex(t *testing.T, client meilisearch.ServiceManager, uid string
 	require.NoError(t, err)
 	testWaitForIndexTask(t, idx, task)
 
-	task, err = idx.UpdateFilterableAttributes(&[]interface{}{"id", "title", "overview"})
+	task, err = idx.UpdateFilterableAttributes(&[]any{"id", "title", "overview"})
 	require.NoError(t, err)
 	testWaitForIndexTask(t, idx, task)
 
@@ -424,13 +424,13 @@ func setUpIndexForFaceting(client meilisearch.ServiceManager) {
 func setUpIndexWithNestedFields(client meilisearch.ServiceManager, indexUID string) {
 	index := client.Index(indexUID)
 
-	documents := []map[string]interface{}{
-		{"id": 1, "title": "Pride and Prejudice", "info": map[string]interface{}{"comment": "A great book", "reviewNb": 50}},
-		{"id": 2, "title": "Le Petit Prince", "info": map[string]interface{}{"comment": "A french book", "reviewNb": 600}},
-		{"id": 3, "title": "Le Rouge et le Noir", "info": map[string]interface{}{"comment": "Another french book", "reviewNb": 700}},
-		{"id": 4, "title": "Alice In Wonderland", "comment": "A weird book", "info": map[string]interface{}{"comment": "A weird book", "reviewNb": 800}},
-		{"id": 5, "title": "The Hobbit", "info": map[string]interface{}{"comment": "An awesome book", "reviewNb": 900}},
-		{"id": 6, "title": "Harry Potter and the Half-Blood Prince", "info": map[string]interface{}{"comment": "The best book", "reviewNb": 1000}},
+	documents := []map[string]any{
+		{"id": 1, "title": "Pride and Prejudice", "info": map[string]any{"comment": "A great book", "reviewNb": 50}},
+		{"id": 2, "title": "Le Petit Prince", "info": map[string]any{"comment": "A french book", "reviewNb": 600}},
+		{"id": 3, "title": "Le Rouge et le Noir", "info": map[string]any{"comment": "Another french book", "reviewNb": 700}},
+		{"id": 4, "title": "Alice In Wonderland", "comment": "A weird book", "info": map[string]any{"comment": "A weird book", "reviewNb": 800}},
+		{"id": 5, "title": "The Hobbit", "info": map[string]any{"comment": "An awesome book", "reviewNb": 900}},
+		{"id": 6, "title": "Harry Potter and the Half-Blood Prince", "info": map[string]any{"comment": "The best book", "reviewNb": 1000}},
 		{"id": 7, "title": "The Hitchhiker's Guide to the Galaxy"},
 	}
 	task, err := index.AddDocuments(documents, nil)
@@ -465,9 +465,9 @@ func setUpIndexWithVector(client meilisearch.ServiceManager, indexUID string) (r
 		return nil, fmt.Errorf("update settings task failed: %#+v", settingsTask)
 	}
 
-	documents := []map[string]interface{}{
-		{"book_id": 123, "title": "Pride and Prejudice", "_vectors": map[string]interface{}{"default": []float64{0.1, 0.2, 0.3}}},
-		{"book_id": 456, "title": "Le Petit Prince", "_vectors": map[string]interface{}{"default": []float64{2.4, 8.5, 1.6}}},
+	documents := []map[string]any{
+		{"book_id": 123, "title": "Pride and Prejudice", "_vectors": map[string]any{"default": []float64{0.1, 0.2, 0.3}}},
+		{"book_id": 456, "title": "Le Petit Prince", "_vectors": map[string]any{"default": []float64{2.4, 8.5, 1.6}}},
 	}
 
 	taskInfo, err = idx.AddDocuments(documents, nil)
@@ -486,7 +486,7 @@ func setUpIndexWithVector(client meilisearch.ServiceManager, indexUID string) (r
 func setUpDistinctIndex(client meilisearch.ServiceManager, indexUID string) {
 	idx := client.Index(indexUID)
 
-	atters := []interface{}{"product_id", "title", "sku", "url"}
+	atters := []any{"product_id", "title", "sku", "url"}
 	task, err := idx.UpdateFilterableAttributes(&atters)
 	if err != nil {
 		fmt.Println(err)
@@ -498,7 +498,7 @@ func setUpDistinctIndex(client meilisearch.ServiceManager, indexUID string) {
 		os.Exit(1)
 	}
 
-	documents := []map[string]interface{}{
+	documents := []map[string]any{
 		{"product_id": 123, "title": "white shirt", "sku": "sku1234", "url": "https://example.com/products/p123"},
 		{"product_id": 456, "title": "red shirt", "sku": "sku213", "url": "https://example.com/products/p456"},
 		{"product_id": 1, "title": "green shirt", "sku": "sku876", "url": "https://example.com/products/p1"},
@@ -517,9 +517,9 @@ func setUpDistinctIndex(client meilisearch.ServiceManager, indexUID string) {
 	}
 }
 
-func testParseCsvDocuments(t *testing.T, documents io.Reader) []map[string]interface{} {
+func testParseCsvDocuments(t *testing.T, documents io.Reader) []map[string]any {
 	var (
-		docs   []map[string]interface{}
+		docs   []map[string]any
 		header []string
 	)
 	r := csv.NewReader(documents)
@@ -533,7 +533,7 @@ func testParseCsvDocuments(t *testing.T, documents io.Reader) []map[string]inter
 			header = record
 			continue
 		}
-		doc := make(map[string]interface{})
+		doc := make(map[string]any)
 		for i, key := range header {
 			doc[key] = record[i]
 		}
@@ -542,10 +542,10 @@ func testParseCsvDocuments(t *testing.T, documents io.Reader) []map[string]inter
 	return docs
 }
 
-func hitsToStringMaps(hits meilisearch.Hits) []map[string]interface{} {
-	var result []map[string]interface{}
+func hitsToStringMaps(hits meilisearch.Hits) []map[string]any {
+	var result []map[string]any
 	for _, hit := range hits {
-		m := make(map[string]interface{})
+		m := make(map[string]any)
 		for k, v := range hit {
 			var s string
 			_ = json.Unmarshal(v, &s)
@@ -573,16 +573,12 @@ func testParseNdjsonDocuments(t *testing.T, documents io.Reader) meilisearch.Hit
 	return docs
 }
 
-func toRawMessage(vPtr interface{}) json.RawMessage {
+func toRawMessage(vPtr any) json.RawMessage {
 	data, err := json.Marshal(vPtr)
 	if err != nil {
 		return nil
 	}
 	return data
-}
-
-func intPtr(i int) *int {
-	return &i
 }
 
 func int64Ptr(i int) *int64 {

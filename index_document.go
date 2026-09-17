@@ -13,19 +13,19 @@ import (
 	"strings"
 )
 
-func (i *index) AddDocuments(documentsPtr interface{}, opts *DocumentOptions) (*TaskInfo, error) {
+func (i *index) AddDocuments(documentsPtr any, opts *DocumentOptions) (*TaskInfo, error) {
 	return i.AddDocumentsWithContext(context.Background(), documentsPtr, opts)
 }
 
-func (i *index) AddDocumentsWithContext(ctx context.Context, documentsPtr interface{}, opts *DocumentOptions) (*TaskInfo, error) {
+func (i *index) AddDocumentsWithContext(ctx context.Context, documentsPtr any, opts *DocumentOptions) (*TaskInfo, error) {
 	return i.addDocuments(ctx, documentsPtr, contentTypeJSON, transformDocumentOptionsToMap(opts))
 }
 
-func (i *index) AddDocumentsInBatches(documentsPtr interface{}, batchSize int, opts *DocumentOptions) ([]TaskInfo, error) {
+func (i *index) AddDocumentsInBatches(documentsPtr any, batchSize int, opts *DocumentOptions) ([]TaskInfo, error) {
 	return i.AddDocumentsInBatchesWithContext(context.Background(), documentsPtr, batchSize, opts)
 }
 
-func (i *index) AddDocumentsInBatchesWithContext(ctx context.Context, documentsPtr interface{}, batchSize int, opts *DocumentOptions) ([]TaskInfo, error) {
+func (i *index) AddDocumentsInBatchesWithContext(ctx context.Context, documentsPtr any, batchSize int, opts *DocumentOptions) ([]TaskInfo, error) {
 	return i.saveDocumentsInBatches(ctx, documentsPtr, batchSize, i.AddDocumentsWithContext, opts)
 }
 
@@ -169,19 +169,19 @@ func (i *index) AddDocumentsNdjsonFromReaderWithContext(ctx context.Context, doc
 	return i.addDocuments(ctx, data, contentTypeNDJSON, transformDocumentOptionsToMap(opts))
 }
 
-func (i *index) UpdateDocuments(documentsPtr interface{}, opts *DocumentOptions) (*TaskInfo, error) {
+func (i *index) UpdateDocuments(documentsPtr any, opts *DocumentOptions) (*TaskInfo, error) {
 	return i.UpdateDocumentsWithContext(context.Background(), documentsPtr, opts)
 }
 
-func (i *index) UpdateDocumentsWithContext(ctx context.Context, documentsPtr interface{}, opts *DocumentOptions) (*TaskInfo, error) {
+func (i *index) UpdateDocumentsWithContext(ctx context.Context, documentsPtr any, opts *DocumentOptions) (*TaskInfo, error) {
 	return i.updateDocuments(ctx, documentsPtr, contentTypeJSON, transformDocumentOptionsToMap(opts))
 }
 
-func (i *index) UpdateDocumentsInBatches(documentsPtr interface{}, batchSize int, opts *DocumentOptions) ([]TaskInfo, error) {
+func (i *index) UpdateDocumentsInBatches(documentsPtr any, batchSize int, opts *DocumentOptions) ([]TaskInfo, error) {
 	return i.UpdateDocumentsInBatchesWithContext(context.Background(), documentsPtr, batchSize, opts)
 }
 
-func (i *index) UpdateDocumentsInBatchesWithContext(ctx context.Context, documentsPtr interface{}, batchSize int, opts *DocumentOptions) ([]TaskInfo, error) {
+func (i *index) UpdateDocumentsInBatchesWithContext(ctx context.Context, documentsPtr any, batchSize int, opts *DocumentOptions) ([]TaskInfo, error) {
 	return i.saveDocumentsInBatches(ctx, documentsPtr, batchSize, i.UpdateDocumentsWithContext, opts)
 }
 
@@ -244,11 +244,11 @@ func (i *index) UpdateDocumentsByFunctionWithContext(ctx context.Context, req *U
 	return resp, nil
 }
 
-func (i *index) GetDocument(identifier string, request *DocumentQuery, documentPtr interface{}) error {
+func (i *index) GetDocument(identifier string, request *DocumentQuery, documentPtr any) error {
 	return i.GetDocumentWithContext(context.Background(), identifier, request, documentPtr)
 }
 
-func (i *index) GetDocumentWithContext(ctx context.Context, identifier string, request *DocumentQuery, documentPtr interface{}) error {
+func (i *index) GetDocumentWithContext(ctx context.Context, identifier string, request *DocumentQuery, documentPtr any) error {
 	req := &internalRequest{
 		endpoint:            "/indexes/" + i.uid + "/documents/" + identifier,
 		method:              http.MethodGet,
@@ -338,17 +338,17 @@ func (i *index) DeleteDocumentsWithContext(ctx context.Context, identifiers []st
 	return resp, nil
 }
 
-func (i *index) DeleteDocumentsByFilter(filter interface{}, opts *DocumentOptions) (*TaskInfo, error) {
+func (i *index) DeleteDocumentsByFilter(filter any, opts *DocumentOptions) (*TaskInfo, error) {
 	return i.DeleteDocumentsByFilterWithContext(context.Background(), filter, opts)
 }
 
-func (i *index) DeleteDocumentsByFilterWithContext(ctx context.Context, filter interface{}, opts *DocumentOptions) (*TaskInfo, error) {
+func (i *index) DeleteDocumentsByFilterWithContext(ctx context.Context, filter any, opts *DocumentOptions) (*TaskInfo, error) {
 	resp := new(TaskInfo)
 	req := &internalRequest{
 		endpoint:    "/indexes/" + i.uid + "/documents/delete",
 		method:      http.MethodPost,
 		contentType: contentTypeJSON,
-		withRequest: map[string]interface{}{
+		withRequest: map[string]any{
 			"filter": filter,
 		},
 		withResponse:        resp,
@@ -383,7 +383,7 @@ func (i *index) DeleteAllDocumentsWithContext(ctx context.Context, opts *Documen
 	return resp, nil
 }
 
-func (i *index) addDocuments(ctx context.Context, documents interface{}, contentType string, options map[string]string) (*TaskInfo, error) {
+func (i *index) addDocuments(ctx context.Context, documents any, contentType string, options map[string]string) (*TaskInfo, error) {
 	resp := new(TaskInfo)
 	endpoint := "/indexes/" + i.uid + "/documents"
 	if len(options) > 0 {
@@ -497,17 +497,14 @@ func (i *index) saveDocumentsFromReaderInBatches(ctx context.Context, documents 
 	return responses, nil
 }
 
-func (i *index) saveDocumentsInBatches(ctx context.Context, documentsPtr interface{}, batchSize int, documentFunc func(ctx context.Context, documentsPtr interface{}, opts *DocumentOptions) (resp *TaskInfo, err error), opts *DocumentOptions) (resp []TaskInfo, err error) {
+func (i *index) saveDocumentsInBatches(ctx context.Context, documentsPtr any, batchSize int, documentFunc func(ctx context.Context, documentsPtr any, opts *DocumentOptions) (resp *TaskInfo, err error), opts *DocumentOptions) (resp []TaskInfo, err error) {
 	arr := reflect.ValueOf(documentsPtr)
 	lenDocs := arr.Len()
 	numBatches := int(math.Ceil(float64(lenDocs) / float64(batchSize)))
 	resp = make([]TaskInfo, numBatches)
 
-	for j := 0; j < numBatches; j++ {
-		end := (j + 1) * batchSize
-		if end > lenDocs {
-			end = lenDocs
-		}
+	for j := range numBatches {
+		end := min((j+1)*batchSize, lenDocs)
 
 		batch := arr.Slice(j*batchSize, end).Interface()
 
@@ -523,7 +520,7 @@ func (i *index) saveDocumentsInBatches(ctx context.Context, documentsPtr interfa
 	return resp, nil
 }
 
-func (i *index) updateDocuments(ctx context.Context, documentsPtr interface{}, contentType string, options map[string]string) (resp *TaskInfo, err error) {
+func (i *index) updateDocuments(ctx context.Context, documentsPtr any, contentType string, options map[string]string) (resp *TaskInfo, err error) {
 	resp = &TaskInfo{}
 	endpoint := ""
 	if options == nil {

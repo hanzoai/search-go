@@ -17,19 +17,19 @@ type TestDoc struct {
 }
 
 // Dummy custom marshal/unmarshal for testing
-func customMarshal(v interface{}) ([]byte, error) {
+func customMarshal(v any) ([]byte, error) {
 	return json.Marshal(v)
 }
 
-func customUnmarshal(data []byte, v interface{}) error {
+func customUnmarshal(data []byte, v any) error {
 	return json.Unmarshal(data, v)
 }
 
-func failingMarshal(v interface{}) ([]byte, error) {
+func failingMarshal(v any) ([]byte, error) {
 	return nil, errors.New("marshal failed")
 }
 
-func failingUnmarshal(data []byte, v interface{}) error {
+func failingUnmarshal(data []byte, v any) error {
 	return errors.New("unmarshal failed")
 }
 
@@ -266,11 +266,11 @@ func TestHitDecodeInto_Errors(t *testing.T) {
 
 func TestHitsDecodeInto_StructSlice(t *testing.T) {
 	h := makeHitFromStruct(t, exampleBookForTest{
-		ID:              "bk_3",
-		Title:           "T",
-		Price:           7,
-		exampleEmbedded: exampleEmbedded{E: "e"},
-		Renamed:         "R",
+		ID:      "bk_3",
+		Title:   "T",
+		Price:   7,
+		E:       "e",
+		Renamed: "R",
 	})
 	hs := Hits{h, h, h}
 
@@ -482,7 +482,7 @@ type helperOuter struct {
 }
 
 func TestGetTypeInfoAndCollectFields(t *testing.T) {
-	rt := reflect.TypeOf(helperOuter{})
+	rt := reflect.TypeFor[helperOuter]()
 
 	// First call builds and caches
 	ti1 := getTypeInfo(rt)
