@@ -2,6 +2,8 @@
 
 # Hanzo Search Go SDK
 
+[![Open in Hanzo](https://hanzo.app/badges/open-in-hanzo.svg)](https://hanzo.app/dev/open?repo=github.com/hanzoai/search-go&ref=main&action=open) [![Edit with Hanzo](https://hanzo.app/badges/edit-with-hanzo.svg)](https://hanzo.app/dev/open?repo=github.com/hanzoai/search-go&ref=main&action=edit) [![Deploy with Hanzo](https://hanzo.app/badges/deploy-with-hanzo.svg)](https://hanzo.app/dev/open?repo=github.com/hanzoai/search-go&ref=main&action=deploy)
+
 [![Go Reference](https://pkg.go.dev/badge/github.com/hanzoai/search-go.svg)](https://pkg.go.dev/github.com/hanzoai/search-go)
 [![License: MIT](https://img.shields.io/badge/license-MIT-informational)](LICENSE)
 
